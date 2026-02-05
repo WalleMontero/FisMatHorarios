@@ -18,7 +18,8 @@ let tokenClient;
 let gapiInited = false;
 let gisInited = false;
 
-function gapiLoaded() {
+// Funciones globales para carga de scripts
+window.gapiLoaded = function () {
   gapi.load("client", async () => {
     await gapi.client.init({
       discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
@@ -26,9 +27,9 @@ function gapiLoaded() {
     gapiInited = true;
     checkBeforeStart();
   });
-}
+};
 
-function gisLoaded() {
+window.gisLoaded = function () {
   tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: CLIENT_ID,
     scope: SCOPES,
@@ -36,7 +37,7 @@ function gisLoaded() {
   });
   gisInited = true;
   checkBeforeStart();
-}
+};
 
 function checkBeforeStart() {
   if (gapiInited && gisInited) {
@@ -780,19 +781,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   buildSubjectMenu(subjectsData);
   renderSelectedSections(subjectsData, cleaned);
 
-  document.getElementById("searcher").addEventListener("input", () => buildSubjectMenu(subjectsData));
-  document.getElementById("searcher").addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      e.target.value = "";
-      buildSubjectMenu(subjectsData);
-    }
-  });
+  const searcher = document.getElementById("searcher");
+  if (searcher) {
+    searcher.addEventListener("input", () => buildSubjectMenu(subjectsData));
+    searcher.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        e.target.value = "";
+        buildSubjectMenu(subjectsData);
+      }
+    });
+  }
 
   // Abrir/cerrar menú (móvil)
   const setMenuOpen = (open) => {
     if (menu) menu.classList.toggle("active", open);
     if (backdrop) backdrop.classList.toggle("active", open);
-    document.body.classList.toggle("no-scroll", open && window.innerWidth <= 900);
+    if (document.body) document.body.classList.toggle("no-scroll", open && window.innerWidth <= 900);
   };
 
   if (menuToggle) menuToggle.addEventListener("click", () => setMenuOpen(true));
@@ -800,7 +804,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") setMenuOpen(false);
   });
-
 
   let resizeTimer = null;
   window.addEventListener("resize", () => {
@@ -817,20 +820,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 120);
   });
 
-  // Recalcular distribución (ancho y solapamiento) cuando cambia el tamaño real del calendario
   if (window.ResizeObserver) {
     const calendarEl = document.getElementById("calendar");
-    const ro = new ResizeObserver(() => {
-      const data = window.__subjectsData;
-      if (!data) return;
-      const currentSelected = loadSelectedSections().filter((key) => {
-        const [s, sec] = key.split("|");
-        return Boolean(data?.[s]?.Secciones?.[sec]);
+    if (calendarEl) {
+      const ro = new ResizeObserver(() => {
+        const data = window.__subjectsData;
+        if (!data) return;
+        const currentSelected = loadSelectedSections().filter((key) => {
+          const [s, sec] = key.split("|");
+          return Boolean(data?.[s]?.Secciones?.[sec]);
+        });
+        renderCalendarGrid();
+        renderSelectedSections(data, currentSelected);
       });
-      renderCalendarGrid();
-      renderSelectedSections(data, currentSelected);
-    });
-    ro.observe(calendarEl);
+      ro.observe(calendarEl);
+    }
   }
 
   const syncBtn = document.getElementById("syncGoogle");
