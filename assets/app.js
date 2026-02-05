@@ -9,6 +9,10 @@ const STORAGE_KEY = "fastweb_selected_sections_v1";
 const DAY_LANES = new Map(); // day -> element
 let cachedSlotHeightPx = null;
 let layoutTimer = null;
+const pinnedKeys = new Set();
+const deselectTimers = new Map();
+const pendingPromoteKeys = new Set();
+const promoteTimers = new Map();
 
 function minutesFromHHMM(hhmm) {
   const [h, m] = hhmm.split(":").map(Number);
@@ -45,6 +49,54 @@ function saveSelectedSections(sectionKeys) {
 function setSelectedCount(n) {
   const el = document.getElementById("selectedCount");
   el.textContent = String(n);
+}
+
+function scheduleDemote(key) {
+  pinnedKeys.add(key);
+  if (deselectTimers.has(key)) {
+    clearTimeout(deselectTimers.get(key));
+  }
+  const timer = setTimeout(() => {
+    pinnedKeys.delete(key);
+    deselectTimers.delete(key);
+    if (window.__subjectsData) buildSubjectMenu(window.__subjectsData);
+  }, 5000);
+  deselectTimers.set(key, timer);
+}
+
+function cancelDemote(key) {
+  if (deselectTimers.has(key)) {
+    clearTimeout(deselectTimers.get(key));
+    deselectTimers.delete(key);
+  }
+  pinnedKeys.delete(key);
+}
+
+function schedulePromote(key) {
+  pendingPromoteKeys.add(key);
+  if (promoteTimers.has(key)) {
+    clearTimeout(promoteTimers.get(key));
+  }
+  const timer = setTimeout(() => {
+    // Solo promover si sigue seleccionado
+    const selected = new Set(loadSelectedSections());
+    if (selected.has(key)) {
+      pendingPromoteKeys.delete(key);
+      if (window.__subjectsData) buildSubjectMenu(window.__subjectsData);
+    } else {
+      pendingPromoteKeys.delete(key);
+    }
+    promoteTimers.delete(key);
+  }, 5000);
+  promoteTimers.set(key, timer);
+}
+
+function cancelPromote(key) {
+  if (promoteTimers.has(key)) {
+    clearTimeout(promoteTimers.get(key));
+    promoteTimers.delete(key);
+  }
+  pendingPromoteKeys.delete(key);
 }
 
 function getSlotHeightPx() {
@@ -160,6 +212,7 @@ function buildSubjectMenu(subjectsData) {
   subjectList.innerHTML = "";
   if (loadingState) loadingState.hidden = true;
   let added = 0;
+  const entries = [];
 
   const subjectNames = Object.keys(subjectsData).sort((a, b) => a.localeCompare(b));
   for (const subjectName of subjectNames) {
@@ -168,50 +221,81 @@ function buildSubjectMenu(subjectsData) {
     const sections = subject?.Secciones ? Object.keys(subject.Secciones) : [];
     for (const secId of sections) {
       const combinedKey = `${subjectName}|${secId}`;
-      const checkboxId = `subj-${combinedKey}`;
-
-      const label = document.createElement("label");
-      const cb = document.createElement("input");
-      cb.type = "checkbox";
-      cb.value = combinedKey;
-      cb.id = checkboxId;
-      cb.checked = selected.has(combinedKey);
-
-      cb.addEventListener("change", () => {
-        const next = new Set(loadSelectedSections());
-        if (cb.checked) next.add(combinedKey);
-        else next.delete(combinedKey);
-        saveSelectedSections(Array.from(next));
-        setSelectedCount(next.size);
-        label.classList.toggle("selected", cb.checked);
-        renderSelectedSections(subjectsData, Array.from(next));
+      entries.push({
+        subjectName,
+        subject,
+        secId,
+        combinedKey,
+        isSelected: selected.has(combinedKey),
+        isPinned: pinnedKeys.has(combinedKey),
+        isPendingPromote: pendingPromoteKeys.has(combinedKey),
       });
-
-      const meta = [];
-      if (subject?.Clave) meta.push(subject.Clave);
-      if (subject?.Area) meta.push(subject.Area);
-      if (subject?.Semestre != null) meta.push(`S${subject.Semestre}`);
-
-      const textWrap = document.createElement("div");
-      textWrap.classList.add("subject-text");
-
-      const title = document.createElement("div");
-      title.classList.add("subject-title");
-      title.textContent = `${subjectName} · S${secId}`;
-
-      const metaLine = document.createElement("div");
-      metaLine.classList.add("subject-meta");
-      metaLine.textContent = meta.join(" · ");
-
-      textWrap.appendChild(title);
-      if (metaLine.textContent) textWrap.appendChild(metaLine);
-
-      label.appendChild(cb);
-      label.appendChild(textWrap);
-      if (cb.checked) label.classList.add("selected");
-      subjectList.appendChild(label);
-      added += 1;
     }
+  }
+
+  const promoted = [];
+  const pinned = [];
+  const rest = [];
+  for (const entry of entries) {
+    if (entry.isSelected && !entry.isPendingPromote) promoted.push(entry);
+    else if (entry.isPinned) pinned.push(entry);
+    else rest.push(entry);
+  }
+  const orderedEntries = promoted.concat(pinned, rest);
+
+  for (const entry of orderedEntries) {
+    const { subjectName, subject, secId, combinedKey, isSelected } = entry;
+    const checkboxId = `subj-${combinedKey}`;
+
+    const label = document.createElement("label");
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.value = combinedKey;
+    cb.id = checkboxId;
+    cb.checked = isSelected;
+
+    cb.addEventListener("change", () => {
+      const next = new Set(loadSelectedSections());
+      if (cb.checked) {
+        next.add(combinedKey);
+        cancelDemote(combinedKey);
+        schedulePromote(combinedKey);
+      } else {
+        next.delete(combinedKey);
+        cancelPromote(combinedKey);
+        scheduleDemote(combinedKey);
+      }
+      saveSelectedSections(Array.from(next));
+      setSelectedCount(next.size);
+      label.classList.toggle("selected", cb.checked);
+      buildSubjectMenu(subjectsData);
+      renderSelectedSections(subjectsData, Array.from(next));
+    });
+
+    const meta = [];
+    if (subject?.Clave) meta.push(subject.Clave);
+    if (subject?.Area) meta.push(subject.Area);
+    if (subject?.Semestre != null) meta.push(`S${subject.Semestre}`);
+
+    const textWrap = document.createElement("div");
+    textWrap.classList.add("subject-text");
+
+    const title = document.createElement("div");
+    title.classList.add("subject-title");
+    title.textContent = `${subjectName} · S${secId}`;
+
+    const metaLine = document.createElement("div");
+    metaLine.classList.add("subject-meta");
+    metaLine.textContent = meta.join(" · ");
+
+    textWrap.appendChild(title);
+    if (metaLine.textContent) textWrap.appendChild(metaLine);
+
+    label.appendChild(cb);
+    label.appendChild(textWrap);
+    if (cb.checked) label.classList.add("selected");
+    subjectList.appendChild(label);
+    added += 1;
   }
   if (emptyState) emptyState.hidden = added > 0;
 }
@@ -290,7 +374,7 @@ function showSubjectModal(subjectsData, subjectName, sectionId) {
     const li = document.createElement("li");
     const startHH = String(Math.floor(m.startMin / 60)).padStart(2, "0") + ":" + String(m.startMin % 60).padStart(2, "0");
     const endHH = String(Math.floor(m.endMin / 60)).padStart(2, "0") + ":" + String(m.endMin % 60).padStart(2, "0");
-    li.innerHTML = `<b>${m.day}</b>, de ${startHH} a ${endHH}${m.salon ? ` en ${m.salon}` : ""}`;
+    li.innerHTML = `<b>${m.day}</b>, de ${startHH} a ${endHH}${m.salon ? ` en <b>${m.salon}</b>` : ""}`;
     activitiesList.appendChild(li);
   }
 
@@ -333,8 +417,6 @@ function renderSelectedSections(subjectsData, selectedKeys) {
   }
   if (emptyEl) emptyEl.hidden = true;
 
-  const slotH = getSlotHeightPx();
-  const totalSlots = ((END_HOUR - START_HOUR) * 60) / SLOT_MINUTES;
   const byDay = new Map(DAYS.map((d) => [d, []]));
 
   for (const key of selectedKeys) {
@@ -371,47 +453,81 @@ function renderSelectedSections(subjectsData, selectedKeys) {
 
     items.sort((a, b) => a.startSlots - b.startSlots || a.endSlots - b.endSlots);
 
-    const colEnds = [];
-    const assignments = [];
+    // Crear clusters por traslape para que cada grupo use su propio número de columnas
+    const clusters = [];
+    let cluster = [];
+    let clusterEnd = -Infinity;
     for (const item of items) {
-      let col = -1;
-      for (let i = 0; i < colEnds.length; i++) {
-        if (colEnds[i] <= item.startSlots) {
-          col = i;
-          break;
-        }
+      if (!cluster.length) {
+        cluster = [item];
+        clusterEnd = item.endSlots;
+        continue;
       }
-      if (col === -1) {
-        colEnds.push(item.endSlots);
-        col = colEnds.length - 1;
+      if (item.startSlots < clusterEnd) {
+        cluster.push(item);
+        clusterEnd = Math.max(clusterEnd, item.endSlots);
       } else {
-        colEnds[col] = item.endSlots;
+        clusters.push(cluster);
+        cluster = [item];
+        clusterEnd = item.endSlots;
       }
-      assignments.push({ item, col });
     }
+    if (cluster.length) clusters.push(cluster);
 
-    const cols = Math.max(1, colEnds.length);
-    lane.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-    lane.style.gridAutoRows = `var(--slot-h)`;
+    for (const cl of clusters) {
+      // Asignar columnas dentro del cluster
+      const colEnds = [];
+      const assignments = [];
+      let clusterStart = Infinity;
+      let clusterEndSlots = -Infinity;
 
-    for (const { item, col } of assignments) {
-      const eventEl = document.createElement("div");
-      eventEl.classList.add("event");
-      eventEl.style.backgroundColor = stableColorFromString(item.subjectName);
-      const titleHtml = `<span class="event-title">${item.subjectName}</span>`;
-      const roomHtml = item.meeting.salon ? `<span class="event-room">${item.meeting.salon}</span>` : "";
-      eventEl.innerHTML = `${titleHtml}${roomHtml}`;
-      eventEl.setAttribute("data-day", day);
-      eventEl.addEventListener("click", (e) => {
-        e.stopPropagation();
-        showSubjectModal(subjectsData, item.subjectName, item.sectionId);
-      });
+      for (const item of cl) {
+        clusterStart = Math.min(clusterStart, item.startSlots);
+        clusterEndSlots = Math.max(clusterEndSlots, item.endSlots);
+        let col = -1;
+        for (let i = 0; i < colEnds.length; i++) {
+          if (colEnds[i] <= item.startSlots) {
+            col = i;
+            break;
+          }
+        }
+        if (col === -1) {
+          colEnds.push(item.endSlots);
+          col = colEnds.length - 1;
+        } else {
+          colEnds[col] = item.endSlots;
+        }
+        assignments.push({ item, col });
+      }
 
-      eventEl.style.gridColumn = `${col + 1} / span 1`;
-      eventEl.style.gridRowStart = String(item.startSlots + 1);
-      eventEl.style.gridRowEnd = String(item.endSlots + 1);
+      const cols = Math.max(1, colEnds.length);
+      const clusterEl = document.createElement("div");
+      clusterEl.classList.add("cluster");
+      clusterEl.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+      clusterEl.style.gridRowStart = String(clusterStart + 1);
+      clusterEl.style.gridRowEnd = String(clusterEndSlots + 1);
 
-      lane.appendChild(eventEl);
+      for (const { item, col } of assignments) {
+        const eventEl = document.createElement("div");
+        eventEl.classList.add("event");
+        eventEl.style.backgroundColor = stableColorFromString(item.subjectName);
+        const titleHtml = `<span class="event-title">${item.subjectName}</span>`;
+        const roomHtml = item.meeting.salon ? `<span class="event-room">${item.meeting.salon}</span>` : "";
+        eventEl.innerHTML = `${titleHtml}${roomHtml}`;
+        eventEl.setAttribute("data-day", day);
+        eventEl.addEventListener("click", (e) => {
+          e.stopPropagation();
+          showSubjectModal(subjectsData, item.subjectName, item.sectionId);
+        });
+
+        eventEl.style.gridColumn = `${col + 1} / span 1`;
+        eventEl.style.gridRowStart = String(item.startSlots - clusterStart + 1);
+        eventEl.style.gridRowEnd = String(item.endSlots - clusterStart + 1);
+
+        clusterEl.appendChild(eventEl);
+      }
+
+      lane.appendChild(clusterEl);
     }
   }
 }
@@ -472,6 +588,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("clearBtn").addEventListener("click", () => {
     saveSelectedSections([]);
     setSelectedCount(0);
+    pinnedKeys.clear();
+    deselectTimers.forEach((t) => clearTimeout(t));
+    deselectTimers.clear();
+    pendingPromoteKeys.clear();
+    promoteTimers.forEach((t) => clearTimeout(t));
+    promoteTimers.clear();
     buildSubjectMenu(subjectsData);
     clearRenderedEvents();
   });
