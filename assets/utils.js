@@ -22,6 +22,60 @@ function stableColorFromString(text) {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
+function parseColorToRgb(color) {
+    if (!color || typeof color !== "string") return null;
+    const raw = color.trim();
+    if (raw.startsWith("#")) {
+        const hex = raw.slice(1);
+        if (hex.length === 3) {
+            const r = parseInt(hex[0] + hex[0], 16);
+            const g = parseInt(hex[1] + hex[1], 16);
+            const b = parseInt(hex[2] + hex[2], 16);
+            return { r, g, b };
+        }
+        if (hex.length === 6) {
+            const r = parseInt(hex.slice(0, 2), 16);
+            const g = parseInt(hex.slice(2, 4), 16);
+            const b = parseInt(hex.slice(4, 6), 16);
+            return { r, g, b };
+        }
+        return null;
+    }
+    const match = raw.match(/rgba?\(([^)]+)\)/i);
+    if (!match) return null;
+    const parts = match[1].split(",").map((p) => Number.parseFloat(p.trim()));
+    if (parts.length < 3 || parts.some((n) => Number.isNaN(n))) return null;
+    return {
+        r: clamp(Math.round(parts[0]), 0, 255),
+        g: clamp(Math.round(parts[1]), 0, 255),
+        b: clamp(Math.round(parts[2]), 0, 255),
+    };
+}
+
+function getRelativeLuminance({ r, g, b }) {
+    const toLinear = (v) => {
+        const c = v / 255;
+        return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    };
+    const rLin = toLinear(r);
+    const gLin = toLinear(g);
+    const bLin = toLinear(b);
+    return 0.2126 * rLin + 0.7152 * gLin + 0.0722 * bLin;
+}
+
+function getReadableTextColor(bgColor, lightColor = "#f8fafc", darkColor = "#0f172a") {
+    const bg = parseColorToRgb(bgColor);
+    const light = parseColorToRgb(lightColor);
+    const dark = parseColorToRgb(darkColor);
+    if (!bg || !light || !dark) return darkColor;
+    const bgL = getRelativeLuminance(bg);
+    const lightL = getRelativeLuminance(light);
+    const darkL = getRelativeLuminance(dark);
+    const contrastLight = (Math.max(bgL, lightL) + 0.05) / (Math.min(bgL, lightL) + 0.05);
+    const contrastDark = (Math.max(bgL, darkL) + 0.05) / (Math.min(bgL, darkL) + 0.05);
+    return contrastLight >= contrastDark ? lightColor : darkColor;
+}
+
 function loadSelectedSections() {
     try {
         return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");

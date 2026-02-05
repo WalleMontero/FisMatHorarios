@@ -220,10 +220,13 @@ function showSubjectModal(subjectsData, subjectName, sectionId) {
     modalContent.id = "modalContent";
     modalContent.classList.add("modal-content");
     modalContent.style.backgroundColor = modalColor;
+    const modalTextColor = getReadableTextColor(modalColor);
+    modalContent.style.color = modalTextColor;
 
     const closeButton = document.createElement("span");
     closeButton.textContent = "X";
     closeButton.classList.add("close-button");
+    closeButton.style.color = modalTextColor;
     closeButton.addEventListener("click", closeModal);
 
     const subjectTittle = document.createElement("h3");
@@ -392,7 +395,9 @@ function renderSelectedSections(subjectsData, selectedKeys) {
                 const eventEl = document.createElement("div");
                 eventEl.classList.add("event");
                 const combinedKey = `${item.subjectName}|${item.sectionId}`;
-                eventEl.style.backgroundColor = getSectionColor(combinedKey, item.subjectName);
+                const eventColor = getSectionColor(combinedKey, item.subjectName);
+                eventEl.style.backgroundColor = eventColor;
+                eventEl.style.color = getReadableTextColor(eventColor);
                 const titleHtml = `<span class="event-title">${item.subjectName}</span>`;
                 const roomHtml = item.meeting.salon ? `<span class="event-room">${item.meeting.salon}</span>` : "";
                 eventEl.innerHTML = `${titleHtml}${roomHtml}`;
