@@ -399,7 +399,7 @@ function showSubjectModal(subjectsData, subjectName, sectionId) {
     const li = document.createElement("li");
     const startHH = String(Math.floor(m.startMin / 60)).padStart(2, "0") + ":" + String(m.startMin % 60).padStart(2, "0");
     const endHH = String(Math.floor(m.endMin / 60)).padStart(2, "0") + ":" + String(m.endMin % 60).padStart(2, "0");
-    li.innerHTML = `<b>${m.day}</b>, de ${startHH} a ${endHH}${m.salon ? ` en <b>${m.salon}</b>` : ""}`;
+    li.innerHTML = `<b>${m.day}</b>, de ${startHH} a ${endHH}${m.salon ? ` en: <b>${m.salon}</b>` : ""}`;
     activitiesList.appendChild(li);
   }
 
@@ -532,10 +532,10 @@ function renderSelectedSections(subjectsData, selectedKeys) {
       clusterEl.style.gridRowEnd = String(clusterEndSlots + 1);
 
       for (const { item, col } of assignments) {
-      const eventEl = document.createElement("div");
-      eventEl.classList.add("event");
-      const combinedKey = `${item.subjectName}|${item.sectionId}`;
-      eventEl.style.backgroundColor = getSectionColor(combinedKey, item.subjectName);
+        const eventEl = document.createElement("div");
+        eventEl.classList.add("event");
+        const combinedKey = `${item.subjectName}|${item.sectionId}`;
+        eventEl.style.backgroundColor = getSectionColor(combinedKey, item.subjectName);
         const titleHtml = `<span class="event-title">${item.subjectName}</span>`;
         const roomHtml = item.meeting.salon ? `<span class="event-room">${item.meeting.salon}</span>` : "";
         eventEl.innerHTML = `${titleHtml}${roomHtml}`;
