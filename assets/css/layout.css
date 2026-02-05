@@ -44,7 +44,7 @@
     #subjectMenu {
         width: 100%;
         height: auto;
-        max-height: 800px;
+        max-height: 700px;
         /* Increased to give more space for the lists */
         position: relative;
         top: 0;
@@ -53,6 +53,7 @@
 
     .calendar-card {
         padding: 8px;
+        padding-left: 0px !important;
     }
 }
 
