@@ -6,6 +6,8 @@ const END_HOUR = 21;
 const SLOT_MINUTES = 30; // 30 min por fila
 
 const STORAGE_KEY = "fastweb_selected_sections_v1";
+const DAY_LANES = new Map(); // day -> element
+let cachedSlotHeightPx = null;
 
 function minutesFromHHMM(hhmm) {
   const [h, m] = hhmm.split(":").map(Number);
@@ -44,11 +46,23 @@ function setSelectedCount(n) {
   el.textContent = `${n} sección${n === 1 ? "" : "es"} seleccionada${n === 1 ? "" : "s"}`;
 }
 
+function getSlotHeightPx() {
+  if (cachedSlotHeightPx != null) return cachedSlotHeightPx;
+  const calendar = document.getElementById("calendar");
+  const raw = getComputedStyle(calendar).getPropertyValue("--slot-h").trim();
+  const n = parseInt(raw.replace("px", ""), 10);
+  cachedSlotHeightPx = Number.isFinite(n) && n > 0 ? n : 28;
+  return cachedSlotHeightPx;
+}
+
 function renderCalendarGrid() {
   const calendar = document.getElementById("calendar");
   calendar.innerHTML = "";
 
-  // Headers de días: cada día ocupa 2 columnas
+  DAY_LANES.clear();
+  cachedSlotHeightPx = null;
+
+  // Headers de días
   DAYS.forEach((dia, index) => {
     const header = document.createElement("div");
     const contenido = document.createElement("div");
@@ -57,7 +71,7 @@ function renderCalendarGrid() {
     header.classList.add("day-header");
     contenido.textContent = dia;
     header.style.gridRow = "1";
-    header.style.gridColumn = `${index * 2 + 2} / span 2`;
+    header.style.gridColumn = String(index + 2);
     header.appendChild(contenido);
     calendar.appendChild(header);
   });
@@ -81,9 +95,21 @@ function renderCalendarGrid() {
       const cell = document.createElement("div");
       cell.classList.add("slot-cell");
       cell.style.gridRow = String(row);
-      cell.style.gridColumn = `${dayIndex * 2 + 2} / span 2`;
+      cell.style.gridColumn = String(dayIndex + 2);
       calendar.appendChild(cell);
     }
+  }
+
+  // Lanes por día (contenedores absolutos para eventos)
+  for (let dayIndex = 0; dayIndex < DAYS.length; dayIndex++) {
+    const day = DAYS[dayIndex];
+    const lane = document.createElement("div");
+    lane.classList.add("day-lane");
+    lane.setAttribute("data-day", day);
+    lane.style.gridColumn = String(dayIndex + 2);
+    lane.style.gridRow = `2 / span ${totalSlots}`;
+    calendar.appendChild(lane);
+    DAY_LANES.set(day, lane);
   }
 }
 
@@ -183,9 +209,10 @@ function clearRenderedEvents() {
 function recalculateDayEvents(day) {
   const dayIndex = DAYS.indexOf(day);
   if (dayIndex < 0) return;
-  const baseColumn = 2 + dayIndex * 2;
+  const lane = DAY_LANES.get(day);
+  if (!lane) return;
 
-  const eventEls = Array.from(document.querySelectorAll(`.event[data-day="${day}"]`));
+  const eventEls = Array.from(lane.querySelectorAll(`.event[data-day="${day}"]`));
   const events = eventEls
     .map((el) => ({
       el,
@@ -194,42 +221,56 @@ function recalculateDayEvents(day) {
     }))
     .sort((a, b) => a.startMin - b.startMin);
 
-  let groups = [];
-  let currentGroup = [];
-  let currentGroupEnd = 0;
+  // Clusters (componentes conectadas por traslape transitive)
+  const clusters = [];
+  let cluster = [];
+  let clusterEnd = -Infinity;
   for (const ev of events) {
-    if (currentGroup.length === 0) {
-      currentGroup.push(ev);
-      currentGroupEnd = ev.endMin;
+    if (cluster.length === 0) {
+      cluster = [ev];
+      clusterEnd = ev.endMin;
       continue;
     }
-    if (ev.startMin < currentGroupEnd) {
-      currentGroup.push(ev);
-      currentGroupEnd = Math.max(currentGroupEnd, ev.endMin);
+    if (ev.startMin < clusterEnd) {
+      cluster.push(ev);
+      clusterEnd = Math.max(clusterEnd, ev.endMin);
     } else {
-      groups.push(currentGroup);
-      currentGroup = [ev];
-      currentGroupEnd = ev.endMin;
+      clusters.push(cluster);
+      cluster = [ev];
+      clusterEnd = ev.endMin;
     }
   }
-  if (currentGroup.length > 0) groups.push(currentGroup);
+  if (cluster.length) clusters.push(cluster);
 
-  groups.forEach((group) => {
-    if (group.length === 1) {
-      group[0].el.style.gridColumnStart = String(baseColumn);
-      group[0].el.style.gridColumnEnd = String(baseColumn + 2);
-    } else if (group.length === 2) {
-      group[0].el.style.gridColumnStart = String(baseColumn);
-      group[0].el.style.gridColumnEnd = String(baseColumn + 1);
-      group[1].el.style.gridColumnStart = String(baseColumn + 1);
-      group[1].el.style.gridColumnEnd = String(baseColumn + 2);
-    } else {
-      group.forEach((item) => {
-        item.el.style.gridColumnStart = String(baseColumn);
-        item.el.style.gridColumnEnd = String(baseColumn + 2);
-      });
+  for (const cl of clusters) {
+    // Asignación greedy de columnas dentro del cluster
+    const colEnds = []; // endMin por columna
+    const assigned = []; // { ev, col }
+    for (const ev of cl) {
+      let col = -1;
+      for (let i = 0; i < colEnds.length; i++) {
+        if (colEnds[i] <= ev.startMin) {
+          col = i;
+          break;
+        }
+      }
+      if (col === -1) {
+        colEnds.push(ev.endMin);
+        col = colEnds.length - 1;
+      } else {
+        colEnds[col] = ev.endMin;
+      }
+      assigned.push({ ev, col });
     }
-  });
+
+    const cols = Math.max(1, colEnds.length);
+    const w = 100 / cols;
+    for (const { ev, col } of assigned) {
+      ev.el.style.left = `calc(${col * w}% + 2px)`;
+      ev.el.style.width = `calc(${w}% - 4px)`;
+      ev.el.style.zIndex = String(100 + col);
+    }
+  }
 }
 
 function showSubjectModal(subjectsData, subjectName, sectionId) {
@@ -319,8 +360,7 @@ function closeModal() {
 
 function renderSelectedSections(subjectsData, selectedKeys) {
   clearRenderedEvents();
-
-  const calendar = document.getElementById("calendar");
+  const slotH = getSlotHeightPx();
   const affectedDays = new Set();
 
   for (const key of selectedKeys) {
@@ -334,12 +374,12 @@ function renderSelectedSections(subjectsData, selectedKeys) {
       const dayIndex = DAYS.indexOf(m.day);
       if (dayIndex < 0) continue;
       affectedDays.add(m.day);
-
-      const baseColumn = 2 + dayIndex * 2;
       const dayStartMin = START_HOUR * 60;
 
-      const rowStart = Math.floor((m.startMin - dayStartMin) / SLOT_MINUTES) + 2;
-      const rowEnd = Math.ceil((m.endMin - dayStartMin) / SLOT_MINUTES) + 2;
+      const startSlots = (m.startMin - dayStartMin) / SLOT_MINUTES;
+      const endSlots = (m.endMin - dayStartMin) / SLOT_MINUTES;
+      const topPx = Math.max(0, startSlots * slotH);
+      const heightPx = Math.max(slotH, (endSlots - startSlots) * slotH);
 
       const eventEl = document.createElement("div");
       eventEl.classList.add("event");
@@ -348,17 +388,18 @@ function renderSelectedSections(subjectsData, selectedKeys) {
       eventEl.setAttribute("data-day", m.day);
       eventEl.setAttribute("data-start-min", String(m.startMin));
       eventEl.setAttribute("data-end-min", String(m.endMin));
-      eventEl.style.gridColumnStart = String(baseColumn);
-      eventEl.style.gridColumnEnd = String(baseColumn + 2);
-      eventEl.style.gridRowStart = String(rowStart);
-      eventEl.style.gridRowEnd = String(rowEnd);
+      eventEl.style.top = `${topPx + 2}px`;
+      eventEl.style.height = `${Math.max(18, heightPx - 4)}px`;
+      eventEl.style.left = "2px";
+      eventEl.style.width = "calc(100% - 4px)";
 
       eventEl.addEventListener("click", (e) => {
         e.stopPropagation();
         showSubjectModal(subjectsData, subjectName, sectionId);
       });
 
-      calendar.appendChild(eventEl);
+      const lane = DAY_LANES.get(m.day);
+      if (lane) lane.appendChild(eventEl);
     }
   }
 
