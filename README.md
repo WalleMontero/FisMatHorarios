@@ -1,4 +1,4 @@
-# FastWeb (GitHub Pages)
+# FisMat Horarios
 
 Visualizador de horarios **100% estático** para desplegar en **GitHub Pages**.
 
