@@ -1,0 +1,124 @@
+/* --- GLOBAL LAYOUT --- */
+.container {
+    min-height: 100vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+    padding: 18px;
+    box-sizing: border-box;
+}
+
+div.button-container {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+}
+
+#subjectMenu {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.1);
+    border: 1px solid #e5e7eb;
+    height: calc(100vh - 36px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 900;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    background: transparent;
+    z-index: 10;
+}
+
+.top-bar .title h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.top-bar .title span {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.top-bar .top-menu {
+    min-width: 140px;
+    text-align: center;
+}
+
+@media (min-width: 901px) {
+    .top-bar .top-menu {
+        display: none;
+    }
+}
+
+.footer {
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 12px;
+    max-width: 1000px;
+    width: 96%;
+    margin-bottom: 10px;
+}
+
+.footer code {
+    color: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.06);
+    padding: 1px 5px;
+    border-radius: 6px;
+}
+
+.menu-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+}
+
+.menu-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+@media (max-width: 900px) {
+    .container {
+        grid-template-columns: 1fr;
+        padding: 12px;
+    }
+
+    #subjectMenu {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        width: min(320px, 90vw);
+        height: calc(100vh - 24px);
+        z-index: 1001;
+        transform: translateX(-120%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+
+    #subjectMenu.active {
+        transform: translateX(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .top-bar {
+        position: sticky;
+        top: 6px;
+        z-index: 20;
+    }
+}
