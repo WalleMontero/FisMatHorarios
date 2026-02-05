@@ -186,8 +186,17 @@ div.day-header div.content {
         --slot-h: 24px;
         --day-gutter: 4px;
         --event-gap: 4px;
-        min-width: 100%;
+        min-width: 500px;
+        /* Still allow some scroll to keep columns readable */
         grid-template-rows: 40px repeat(26, var(--slot-h));
+    }
+
+    .calendar-card {
+        padding: 8px;
+        border-radius: 12px;
+        margin: 0;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .day-header div.content {

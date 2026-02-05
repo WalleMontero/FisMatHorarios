@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
   renderCalendarGrid();
-  const menu = document.getElementById("subjectMenu");
-  const backdrop = document.getElementById("menuBackdrop");
-  const menuToggle = document.getElementById("menuToggle");
 
   let subjectsData;
   try {
@@ -31,6 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   buildSubjectMenu(subjectsData);
   renderSelectedSections(subjectsData, cleaned);
 
+  // Reseteo de scroll al cambiar de vista (opcional)
   const searcher = document.getElementById("searcher");
   if (searcher) {
     searcher.addEventListener("input", () => buildSubjectMenu(subjectsData));
@@ -42,29 +40,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Abrir/cerrar menú (móvil)
-  const setMenuOpen = (open) => {
-    if (menu) menu.classList.toggle("active", open);
-    if (backdrop) backdrop.classList.toggle("active", open);
-    if (document.body) document.body.classList.toggle("no-scroll", open && window.innerWidth <= 900);
-  };
-
-  if (menuToggle) menuToggle.addEventListener("click", () => setMenuOpen(true));
-  if (backdrop) backdrop.addEventListener("click", () => setMenuOpen(false));
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") setMenuOpen(false);
-  });
-
   let resizeTimer = null;
   window.addEventListener("resize", () => {
     if (resizeTimer) window.clearTimeout(resizeTimer);
     resizeTimer = window.setTimeout(() => {
       const data = window.__subjectsData;
       if (!data) return;
-      const currentSelected = loadSelectedSections().filter((key) => {
-        const [s, sec] = key.split("|");
-        return Boolean(data?.[s]?.Secciones?.[sec]);
-      });
+      const currentSelected = loadSelectedSections();
       renderCalendarGrid();
       renderSelectedSections(data, currentSelected);
     }, 120);

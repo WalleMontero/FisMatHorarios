@@ -30,10 +30,6 @@ button:active {
     transform: translateY(1px);
 }
 
-#menuToggle {
-    z-index: 900;
-}
-
 /* Sidebar Subject Items */
 #subjectMenu label {
     display: flex;
@@ -132,7 +128,8 @@ input#searcher:focus {
     border-radius: 12px;
     padding: 10px;
     margin-bottom: 10px;
-    max-height: 300px;
+    max-height: 200px;
+    /* Reduced to leave more room for the subject-list */
     display: flex;
     flex-direction: column;
 }
