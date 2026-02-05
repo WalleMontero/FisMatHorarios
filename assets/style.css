@@ -265,6 +265,34 @@ input#searcher:focus {
   color: #6b7280;
 }
 
+.subject-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.color-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid #e5e7eb;
+  padding: 0;
+  background: #94a3b8;
+  cursor: pointer;
+}
+
+.color-swatch:hover {
+  border-color: #94a3b8;
+}
+
+.color-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+}
+
 .empty-state {
   margin-top: 12px;
   font-size: 13px;

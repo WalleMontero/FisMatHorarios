@@ -6,6 +6,7 @@ const END_HOUR = 21;
 const SLOT_MINUTES = 30; // 30 min por fila
 
 const STORAGE_KEY = "fastweb_selected_sections_v1";
+const COLOR_KEY = "fastweb_section_colors_v1";
 const DAY_LANES = new Map(); // day -> element
 let cachedSlotHeightPx = null;
 let layoutTimer = null;
@@ -44,6 +45,30 @@ function loadSelectedSections() {
 
 function saveSelectedSections(sectionKeys) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(sectionKeys));
+}
+
+function loadColorMap() {
+  try {
+    const raw = localStorage.getItem(COLOR_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveColorMap(map) {
+  localStorage.setItem(COLOR_KEY, JSON.stringify(map));
+}
+
+function getSectionColor(key, fallbackName) {
+  const map = loadColorMap();
+  return map[key] || stableColorFromString(fallbackName);
+}
+
+function setSectionColor(key, color) {
+  const map = loadColorMap();
+  map[key] = color;
+  saveColorMap(map);
 }
 
 function setSelectedCount(n) {
@@ -293,6 +318,41 @@ function buildSubjectMenu(subjectsData) {
 
     label.appendChild(cb);
     label.appendChild(textWrap);
+    if (isSelected) {
+      const actions = document.createElement("div");
+      actions.classList.add("subject-actions");
+      const swatch = document.createElement("button");
+      swatch.type = "button";
+      swatch.classList.add("color-swatch");
+      const currentColor = getSectionColor(combinedKey, subjectName);
+      swatch.style.backgroundColor = currentColor;
+      swatch.setAttribute("title", "Cambiar color");
+
+      const colorInput = document.createElement("input");
+      colorInput.type = "color";
+      colorInput.classList.add("color-input");
+      colorInput.value = currentColor;
+
+      swatch.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        colorInput.click();
+      });
+      colorInput.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+      colorInput.addEventListener("change", (e) => {
+        const color = e.target.value;
+        setSectionColor(combinedKey, color);
+        swatch.style.backgroundColor = color;
+        const currentSelected = loadSelectedSections();
+        renderSelectedSections(subjectsData, currentSelected);
+      });
+
+      actions.appendChild(swatch);
+      actions.appendChild(colorInput);
+      label.appendChild(actions);
+    }
     if (cb.checked) label.classList.add("selected");
     subjectList.appendChild(label);
     added += 1;
@@ -508,9 +568,10 @@ function renderSelectedSections(subjectsData, selectedKeys) {
       clusterEl.style.gridRowEnd = String(clusterEndSlots + 1);
 
       for (const { item, col } of assignments) {
-        const eventEl = document.createElement("div");
-        eventEl.classList.add("event");
-        eventEl.style.backgroundColor = stableColorFromString(item.subjectName);
+      const eventEl = document.createElement("div");
+      eventEl.classList.add("event");
+      const combinedKey = `${item.subjectName}|${item.sectionId}`;
+      eventEl.style.backgroundColor = getSectionColor(combinedKey, item.subjectName);
         const titleHtml = `<span class="event-title">${item.subjectName}</span>`;
         const roomHtml = item.meeting.salon ? `<span class="event-room">${item.meeting.salon}</span>` : "";
         eventEl.innerHTML = `${titleHtml}${roomHtml}`;
