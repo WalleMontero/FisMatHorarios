@@ -44,7 +44,7 @@
     #subjectMenu {
         width: 100%;
         height: auto;
-        max-height: 600px;
+        max-height: 800px;
         /* Increased to give more space for the lists */
         position: relative;
         top: 0;

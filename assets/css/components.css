@@ -143,7 +143,19 @@ input#searcher:focus {
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
-    max-height: 500px;
+    max-height: 300px !important;
+}
+
+.subjectList-panel {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+    max-height: 700px;
 }
 
 
