@@ -346,6 +346,9 @@ function showSubjectModal(subjectsData, subjectName, sectionId) {
   const section = subject?.Secciones?.[sectionId];
   if (!subject || !section) return;
 
+  const combinedKey = `${subjectName}|${sectionId}`;
+  const modalColor = getSectionColor(combinedKey, subjectName);
+
   const modalOverlay = document.createElement("div");
   modalOverlay.id = "modalOverlay";
   modalOverlay.classList.add("modal-overlay");
@@ -353,15 +356,19 @@ function showSubjectModal(subjectsData, subjectName, sectionId) {
   const modalContent = document.createElement("div");
   modalContent.id = "modalContent";
   modalContent.classList.add("modal-content");
-  modalContent.style.backgroundColor = stableColorFromString(subjectName);
+  modalContent.style.backgroundColor = modalColor;
+
+  const title = document.createElement("h2");
+  title.textContent = subjectName;
 
   const closeButton = document.createElement("span");
   closeButton.textContent = "X";
   closeButton.classList.add("close-button");
   closeButton.addEventListener("click", closeModal);
 
-  const title = document.createElement("h2");
-  title.textContent = subjectName;
+  const subjectTittle = document.createElement("h3");
+  subjectTittle.textContent = subjectName;
+  modalContent.appendChild(subjectTittle);
 
   const infoList = document.createElement("ul");
   const items = [
@@ -397,7 +404,6 @@ function showSubjectModal(subjectsData, subjectName, sectionId) {
   }
 
   modalContent.appendChild(closeButton);
-  modalContent.appendChild(title);
   modalContent.appendChild(infoList);
   modalContent.appendChild(sectionTitle);
   modalContent.appendChild(activitiesTitle);
@@ -596,7 +602,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const setMenuOpen = (open) => {
     menu.classList.toggle("active", open);
     backdrop.classList.toggle("active", open);
-    document.body.classList.toggle("no-scroll", open && window.innerWidth <= 1100);
+    document.body.classList.toggle("no-scroll", open && window.innerWidth <= 900);
   };
   menuToggle.addEventListener("click", () => setMenuOpen(true));
   backdrop.addEventListener("click", () => setMenuOpen(false));

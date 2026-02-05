@@ -1,4 +1,14 @@
 /* --- BODY Y CONTENEDORES GENERALES --- */
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -149,7 +159,7 @@ button:active {
   text-align: center;
 }
 
-@media (min-width: 1101px) {
+@media (min-width: 901px) {
   .top-bar .top-menu {
     display: none;
   }
@@ -160,6 +170,8 @@ button:active {
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 
 .calendar-scroll::-webkit-scrollbar {
@@ -174,10 +186,9 @@ button:active {
 .calendar-card {
   background: #fff;
   border-radius: 16px;
-  padding-right: 12px;
+  padding: 12px;
   box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
   border: 1px solid #e5e7eb;
-  padding: 0;
   height: fit-content;
 }
 
@@ -249,6 +260,9 @@ input#searcher:focus {
   border-radius: 12px;
   padding: 10px;
   margin-bottom: 10px;
+  max-height: 300px;
+  display: flex;
+  flex-direction: column;
 }
 
 .selected-title {
@@ -262,6 +276,7 @@ input#searcher:focus {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  overflow-y: auto;
 }
 
 .selected-item {
@@ -357,7 +372,7 @@ input#searcher:focus {
   border-radius: 6px;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 900px) {
   .container {
     grid-template-columns: 1fr;
     padding: 12px;
@@ -365,16 +380,21 @@ input#searcher:focus {
 
   #subjectMenu {
     position: fixed;
-    left: -360px;
     top: 12px;
-    width: 320px;
+    left: 12px;
+    width: min(320px, 90vw);
     height: calc(100vh - 24px);
     z-index: 1001;
-    transition: left 0.25s ease;
+    transform: translateX(-120%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.2s ease;
   }
 
   #subjectMenu.active {
-    left: 12px;
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .calendar-card {
@@ -423,14 +443,13 @@ input#searcher:focus {
   grid-template-columns: 36px repeat(5, 1fr);
   grid-template-rows: 50px repeat(26, var(--slot-h));
   width: 100%;
-  min-width: 720px;
+  min-width: 520px;
   max-width: 1200px;
   overflow: hidden;
   position: relative;
   border-radius: 15px;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 0;
 }
 
 .calendar-empty {
@@ -622,10 +641,18 @@ div.day-header div.content {
     padding: 0 8px 14px;
   }
   #calendar {
-    --slot-h: 30px;
-    --day-gutter: 10px;
-    --event-gap: 5px;
-    min-width: 680px;
+    --slot-h: 24px;
+    --day-gutter: 4px;
+    --event-gap: 4px;
+    min-width: 100%;
+    grid-template-rows: 40px repeat(26, var(--slot-h));
+  }
+  .day-header div.content {
+    font-size: 12px;
+    line-height: 36px;
+  }
+  .time-label {
+    font-size: 11px;
   }
   .event {
     display: grid !important;
