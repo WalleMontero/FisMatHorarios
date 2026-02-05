@@ -258,9 +258,9 @@ function setSectionColor(key, color) {
   saveColorMap(map);
 }
 
-function setSelectedCount(n) {
+function setSelectedCount(count) {
   const el = document.getElementById("selectedCount");
-  el.textContent = String(n);
+  if (el) el.textContent = String(count);
 }
 
 function getSlotHeightPx() {
@@ -281,6 +281,8 @@ function getCalendarVarPx(name, fallback) {
 
 function renderCalendarGrid() {
   const calendar = document.getElementById("calendar");
+  const emptyEl = document.getElementById("calendarEmpty");
+  if (emptyEl) emptyEl.hidden = true;
   calendar.innerHTML = "";
 
   DAY_LANES.clear();
@@ -368,7 +370,10 @@ function subjectMatchesQuery(subjectName, subject, query) {
 
 function buildSubjectMenu(subjectsData) {
   const subjectList = document.getElementById("subjectList");
-  const query = document.getElementById("searcher").value;
+  if (!subjectList) return;
+
+  const searcher = document.getElementById("searcher");
+  const query = searcher ? searcher.value : "";
   const selected = new Set(loadSelectedSections());
   const emptyState = document.getElementById("emptyState");
   const loadingState = document.getElementById("loadingState");
