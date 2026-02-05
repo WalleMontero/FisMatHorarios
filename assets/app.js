@@ -455,6 +455,10 @@ function renderSelectedSections(subjectsData, selectedKeys) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   renderCalendarGrid();
+  const menu = document.getElementById("subjectMenu");
+  const backdrop = document.getElementById("menuBackdrop");
+  const menuToggle = document.getElementById("menuToggle");
+  const closeBtn = document.getElementById("closeMenu");
 
   let subjectsData;
   try {
@@ -492,16 +496,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // Abrir/cerrar menú (móvil)
-  document.getElementById("menuToggle").addEventListener("click", () => {
-    document.getElementById("subjectMenu").classList.toggle("active");
-  });
-  document.getElementById("closeMenu").addEventListener("click", () => {
-    document.getElementById("subjectMenu").classList.remove("active");
-  });
-  document.addEventListener("click", (event) => {
-    const subjectMenu = document.getElementById("subjectMenu");
-    const toggle = document.getElementById("menuToggle");
-    if (!subjectMenu.contains(event.target) && !toggle.contains(event.target)) subjectMenu.classList.remove("active");
+  const setMenuOpen = (open) => {
+    menu.classList.toggle("active", open);
+    backdrop.classList.toggle("active", open);
+    document.body.classList.toggle("no-scroll", open && window.innerWidth <= 1100);
+  };
+  menuToggle.addEventListener("click", () => setMenuOpen(true));
+  closeBtn.addEventListener("click", () => setMenuOpen(false));
+  backdrop.addEventListener("click", () => setMenuOpen(false));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setMenuOpen(false);
   });
 
   document.getElementById("clearBtn").addEventListener("click", () => {
