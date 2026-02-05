@@ -45,7 +45,6 @@
     grid-template-columns: 36px repeat(5, 1fr);
     grid-template-rows: 50px repeat(26, var(--slot-h));
     width: 100%;
-    min-width: 520px;
     max-width: 1200px;
     overflow: hidden;
     position: relative;
@@ -92,7 +91,6 @@ div.day-header div.content {
 .slot-cell {
     border-bottom: 1px solid rgba(209, 209, 209, 0.32);
     background-color: #f5f5f5;
-    min-width: 85px;
 }
 
 .slot-cell::after {
@@ -186,8 +184,6 @@ div.day-header div.content {
         --slot-h: 24px;
         --day-gutter: 4px;
         --event-gap: 4px;
-        min-width: 500px;
-        /* Still allow some scroll to keep columns readable */
         grid-template-rows: 40px repeat(26, var(--slot-h));
     }
 
@@ -201,7 +197,7 @@ div.day-header div.content {
 
     .day-header div.content {
         font-size: 12px;
-        line-height: 36px;
+        line-height: 0px;
     }
 
     .time-label {
