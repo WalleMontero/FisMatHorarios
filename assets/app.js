@@ -43,7 +43,7 @@ function saveSelectedSections(sectionKeys) {
 
 function setSelectedCount(n) {
   const el = document.getElementById("selectedCount");
-  el.textContent = `${n} sección${n === 1 ? "" : "es"} seleccionada${n === 1 ? "" : "s"}`;
+  el.textContent = String(n);
 }
 
 function getSlotHeightPx() {
@@ -53,6 +53,13 @@ function getSlotHeightPx() {
   const n = parseInt(raw.replace("px", ""), 10);
   cachedSlotHeightPx = Number.isFinite(n) && n > 0 ? n : 28;
   return cachedSlotHeightPx;
+}
+
+function getCalendarVarPx(name, fallback) {
+  const calendar = document.getElementById("calendar");
+  const raw = getComputedStyle(calendar).getPropertyValue(name).trim();
+  const n = parseInt(raw.replace("px", ""), 10);
+  return Number.isFinite(n) && n >= 0 ? n : fallback;
 }
 
 function renderCalendarGrid() {
@@ -123,7 +130,12 @@ async function loadMergedData() {
 
 function subjectMatchesQuery(subjectName, subject, query) {
   if (!query) return true;
-  const q = query.trim().toLowerCase();
+  const normalize = (s) =>
+    s
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  const q = normalize(query.trim());
   if (!q) return true;
   const hay = [
     subjectName,
@@ -132,17 +144,21 @@ function subjectMatchesQuery(subjectName, subject, query) {
     String(subject?.Semestre ?? ""),
   ]
     .filter(Boolean)
-    .join(" | ")
-    .toLowerCase();
-  return hay.includes(q);
+    .join(" | ");
+  const text = normalize(hay);
+  return text.includes(q);
 }
 
 function buildSubjectMenu(subjectsData) {
   const subjectList = document.getElementById("subjectList");
   const query = document.getElementById("searcher").value;
   const selected = new Set(loadSelectedSections());
+  const emptyState = document.getElementById("emptyState");
+  const loadingState = document.getElementById("loadingState");
 
   subjectList.innerHTML = "";
+  if (loadingState) loadingState.hidden = true;
+  let added = 0;
 
   const subjectNames = Object.keys(subjectsData).sort((a, b) => a.localeCompare(b));
   for (const subjectName of subjectNames) {
@@ -166,6 +182,7 @@ function buildSubjectMenu(subjectsData) {
         else next.delete(combinedKey);
         saveSelectedSections(Array.from(next));
         setSelectedCount(next.size);
+        label.classList.toggle("selected", cb.checked);
         renderSelectedSections(subjectsData, Array.from(next));
       });
 
@@ -174,13 +191,28 @@ function buildSubjectMenu(subjectsData) {
       if (subject?.Area) meta.push(subject.Area);
       if (subject?.Semestre != null) meta.push(`S${subject.Semestre}`);
 
+      const textWrap = document.createElement("div");
+      textWrap.classList.add("subject-text");
+
+      const title = document.createElement("div");
+      title.classList.add("subject-title");
+      title.textContent = `${subjectName} · S${secId}`;
+
+      const metaLine = document.createElement("div");
+      metaLine.classList.add("subject-meta");
+      metaLine.textContent = meta.join(" · ");
+
+      textWrap.appendChild(title);
+      if (metaLine.textContent) textWrap.appendChild(metaLine);
+
       label.appendChild(cb);
-      label.appendChild(
-        document.createTextNode(` ${subjectName} · S${secId} (${meta.join(" · ")})`),
-      );
+      label.appendChild(textWrap);
+      if (cb.checked) label.classList.add("selected");
       subjectList.appendChild(label);
+      added += 1;
     }
   }
+  if (emptyState) emptyState.hidden = added > 0;
 }
 
 function sectionToMeetings(section) {
@@ -264,10 +296,15 @@ function recalculateDayEvents(day) {
     }
 
     const cols = Math.max(1, colEnds.length);
-    const w = 100 / cols;
+    const gap = getCalendarVarPx("--event-gap", 6);
+    const outer = getCalendarVarPx("--day-gutter", 6);
+    const laneWidth = lane.clientWidth;
+    const usable = Math.max(0, laneWidth - outer * 2 - gap * (cols - 1));
+    const colWidth = cols > 0 ? usable / cols : laneWidth;
     for (const { ev, col } of assigned) {
-      ev.el.style.left = `calc(${col * w}% + 2px)`;
-      ev.el.style.width = `calc(${w}% - 4px)`;
+      const leftPx = outer + col * (colWidth + gap);
+      ev.el.style.left = `${leftPx}px`;
+      ev.el.style.width = `${Math.max(12, colWidth)}px`;
       ev.el.style.zIndex = String(100 + col);
     }
   }
@@ -360,7 +397,15 @@ function closeModal() {
 
 function renderSelectedSections(subjectsData, selectedKeys) {
   clearRenderedEvents();
+  const emptyEl = document.getElementById("calendarEmpty");
+  if (!selectedKeys.length) {
+    if (emptyEl) emptyEl.hidden = false;
+    return;
+  }
+  if (emptyEl) emptyEl.hidden = true;
+
   const slotH = getSlotHeightPx();
+  const outer = getCalendarVarPx("--day-gutter", 6);
   const affectedDays = new Set();
 
   for (const key of selectedKeys) {
@@ -384,14 +429,16 @@ function renderSelectedSections(subjectsData, selectedKeys) {
       const eventEl = document.createElement("div");
       eventEl.classList.add("event");
       eventEl.style.backgroundColor = stableColorFromString(subjectName);
-      eventEl.innerHTML = `<p>${subjectName} · S${sectionId}</p><p>${m.salon || ""}</p>`;
+      const titleHtml = `<span class="event-title">${subjectName}</span>`;
+      const roomHtml = m.salon ? `<span class="event-room">${m.salon}</span>` : "";
+      eventEl.innerHTML = `${titleHtml}${roomHtml}`;
       eventEl.setAttribute("data-day", m.day);
       eventEl.setAttribute("data-start-min", String(m.startMin));
       eventEl.setAttribute("data-end-min", String(m.endMin));
       eventEl.style.top = `${topPx + 2}px`;
       eventEl.style.height = `${Math.max(18, heightPx - 4)}px`;
-      eventEl.style.left = "2px";
-      eventEl.style.width = "calc(100% - 4px)";
+      eventEl.style.left = `${outer}px`;
+      eventEl.style.width = `calc(100% - ${outer * 2}px)`;
 
       eventEl.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -414,16 +461,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     subjectsData = await loadMergedData();
   } catch (err) {
     console.error(err);
-    alert(String(err));
+    const loadingState = document.getElementById("loadingState");
+    if (loadingState) {
+      loadingState.textContent = "No se pudo cargar el archivo de datos.";
+      loadingState.hidden = false;
+    }
     return;
   }
 
+  const loadingState = document.getElementById("loadingState");
+  if (loadingState) loadingState.hidden = true;
+  window.__subjectsData = subjectsData;
+
   const selected = loadSelectedSections();
-  setSelectedCount(selected.length);
+  const cleaned = selected.filter((key) => {
+    const [subjectName, sectionId] = key.split("|");
+    return Boolean(subjectsData?.[subjectName]?.Secciones?.[sectionId]);
+  });
+  if (cleaned.length !== selected.length) saveSelectedSections(cleaned);
+  setSelectedCount(cleaned.length);
   buildSubjectMenu(subjectsData);
-  renderSelectedSections(subjectsData, selected);
+  renderSelectedSections(subjectsData, cleaned);
 
   document.getElementById("searcher").addEventListener("input", () => buildSubjectMenu(subjectsData));
+  document.getElementById("searcher").addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      e.target.value = "";
+      buildSubjectMenu(subjectsData);
+    }
+  });
 
   // Abrir/cerrar menú (móvil)
   document.getElementById("menuToggle").addEventListener("click", () => {
@@ -443,5 +509,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     setSelectedCount(0);
     buildSubjectMenu(subjectsData);
     clearRenderedEvents();
+  });
+
+  let resizeTimer = null;
+  window.addEventListener("resize", () => {
+    if (resizeTimer) window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      for (const day of DAYS) recalculateDayEvents(day);
+    }, 120);
   });
 });

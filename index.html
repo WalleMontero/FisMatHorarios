@@ -11,30 +11,50 @@
     <div class="container">
       <aside id="subjectMenu" aria-label="Materias">
         <button id="closeMenu" type="button" aria-label="Cerrar">X</button>
-        <h3>Materias</h3>
+        <div class="menu-sticky">
+          <div class="menu-header">
+            <div>
+              <h3>Materias</h3>
+              <p class="subtle">Selecciona secciones para ver el horario</p>
+            </div>
+            <div class="chip-block" title="Secciones seleccionadas">
+              <div class="chip" id="selectedCount">0</div>
+              <span>sel.</span>
+            </div>
+          </div>
 
-        <div class="controls">
-          <input
-            type="search"
-            id="searcher"
-            placeholder="Buscar (nombre, clave, área)..."
-            autocomplete="off"
-          />
+          <div class="controls">
+            <div class="search-wrapper">
+              <span class="search-icon">🔎</span>
+              <input
+                type="search"
+                id="searcher"
+                placeholder="Buscar (nombre, clave, área)..."
+                autocomplete="off"
+              />
+            </div>
 
-          <div class="control-row">
-            <div class="muted" id="selectedCount">0 seleccionadas</div>
-            <button id="clearBtn" type="button" class="secondary">Limpiar</button>
+            <div class="control-row">
+              <button id="clearBtn" type="button" class="secondary">Limpiar selección</button>
+            </div>
           </div>
         </div>
 
         <div id="subjectList" class="subject-list"></div>
+        <div id="emptyState" class="empty-state" hidden>No hay resultados.</div>
+        <div id="loadingState" class="empty-state">Cargando materias…</div>
       </aside>
 
       <main class="calendar-container">
         <div class="button-container">
           <button id="menuToggle" type="button">☰ Materias</button>
         </div>
-        <div id="calendar" aria-label="Calendario"></div>
+        <div class="calendar-scroll" aria-label="Calendario">
+          <div id="calendar"></div>
+        </div>
+        <div id="calendarEmpty" class="calendar-empty" hidden>
+          Selecciona secciones para ver el horario.
+        </div>
 
       </main>
     </div>
