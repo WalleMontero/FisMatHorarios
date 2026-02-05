@@ -250,27 +250,30 @@ input#searcher:focus {
     color: var(--text-muted);
 }
 
-/* Color Swatch */
-.color-swatch {
+.color-input {
     width: 18px;
     height: 18px;
     border-radius: 4px;
     border: 2px solid var(--border);
     padding: 0;
-    background: var(--text-subtle);
     cursor: pointer;
+    background: transparent;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
-.color-swatch:hover {
-    border-color: var(--text-subtle);
+.color-input::-webkit-color-swatch-wrapper {
+    padding: 0;
 }
 
-.color-input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-    width: 1px;
-    height: 1px;
+.color-input::-webkit-color-swatch {
+    border: none;
+    border-radius: 3px;
+}
+
+.color-input::-moz-color-swatch {
+    border: none;
+    border-radius: 3px;
 }
 
 .empty-state {

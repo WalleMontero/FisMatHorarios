@@ -178,33 +178,21 @@ function renderSelectedPanel(subjectsData, selectedKeys) {
         label.classList.add("selected-name");
         label.textContent = `${item.subjectName} · ${item.secId}`;
 
-        const swatch = document.createElement("button");
-        swatch.type = "button";
-        swatch.classList.add("color-swatch");
         const currentColor = getSectionColor(item.key, item.subjectName);
-        swatch.style.backgroundColor = currentColor;
-        swatch.setAttribute("title", "Cambiar color");
-
         const colorInput = document.createElement("input");
         colorInput.type = "color";
         colorInput.classList.add("color-input");
         colorInput.value = currentColor;
+        colorInput.setAttribute("title", "Cambiar color");
 
-        swatch.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            colorInput.click();
-        });
         colorInput.addEventListener("change", (e) => {
             const color = e.target.value;
             setSectionColor(item.key, color);
-            swatch.style.backgroundColor = color;
             renderSelectedSections(subjectsData, selectedKeys);
         });
 
         row.appendChild(cb);
         row.appendChild(label);
-        row.appendChild(swatch);
         row.appendChild(colorInput);
         container.appendChild(row);
     }
