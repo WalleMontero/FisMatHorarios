@@ -1,4 +1,47 @@
+const THEME_STORAGE_KEY = "theme";
+
+function getPreferredTheme() {
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    if (stored === "light" || stored === "dark") return stored;
+  } catch (_) {
+    // ignore storage errors
+  }
+  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    return "dark";
+  }
+  return "light";
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  const btn = document.getElementById("themeToggle");
+  if (btn) {
+    const isDark = theme === "dark";
+    btn.textContent = isDark ? "☀️" : "🌙";
+    btn.setAttribute("aria-label", isDark ? "Cambiar a tema claro" : "Cambiar a tema oscuro");
+    btn.setAttribute("title", isDark ? "Tema claro" : "Tema oscuro");
+  }
+}
+
+function initThemeToggle() {
+  const btn = document.getElementById("themeToggle");
+  applyTheme(getPreferredTheme());
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    const next = current === "dark" ? "light" : "dark";
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch (_) {
+      // ignore storage errors
+    }
+    applyTheme(next);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
+  initThemeToggle();
   renderCalendarGrid();
 
   let subjectsData;

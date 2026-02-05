@@ -6,11 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" />
   <title>Visualizador de horarios</title>
-  <link rel="stylesheet" href="assets/css/base.css?v=1.2">
-  <link rel="stylesheet" href="assets/css/layout.css?v=1.2">
-  <link rel="stylesheet" href="assets/css/components.css?v=1.2">
-  <link rel="stylesheet" href="assets/css/calendar.css?v=1.2">
-  <link rel="stylesheet" href="assets/css/modals.css?v=1.2">
+  <link rel="stylesheet" href="assets/css/base.css?v=1.3">
+  <link rel="stylesheet" href="assets/css/layout.css?v=1.3">
+  <link rel="stylesheet" href="assets/css/components.css?v=1.3">
+  <link rel="stylesheet" href="assets/css/calendar.css?v=1.3">
+  <link rel="stylesheet" href="assets/css/modals.css?v=1.3">
 </head>
 
 <body>
@@ -22,9 +22,15 @@
           <h3>Materias</h3>
           <p class="subtle">Selecciona secciones para ver el horario</p>
         </div>
-        <div class="chip-block" title="Secciones seleccionadas">
-          <div class="chip" id="selectedCount">0</div>
-          <span>sel.</span>
+        <div class="menu-actions">
+          <button id="themeToggle" class="theme-toggle" type="button" aria-label="Cambiar a tema oscuro"
+            title="Cambiar tema">
+            🌙
+          </button>
+          <div class="chip-block" title="Secciones seleccionadas">
+            <div class="chip" id="selectedCount">0</div>
+            <span>sel.</span>
+          </div>
         </div>
       </div>
 
@@ -98,11 +104,11 @@
     </div>
   </div>
 
-  <script src="assets/constants.js?v=1.2"></script>
-  <script src="assets/utils.js?v=1.2"></script>
-  <script src="assets/google-sync.js?v=1.2"></script>
-  <script src="assets/ui.js?v=1.2"></script>
-  <script src="assets/app.js?v=1.2"></script>
+  <script src="assets/constants.js?v=1.3"></script>
+  <script src="assets/utils.js?v=1.3"></script>
+  <script src="assets/google-sync.js?v=1.3"></script>
+  <script src="assets/ui.js?v=1.3"></script>
+  <script src="assets/app.js?v=1.3"></script>
   <script src="https://accounts.google.com/gsi/client" async defer onload="gisLoaded()"></script>
   <script src="https://apis.google.com/js/api.js" async defer onload="gapiLoaded()"></script>
 </body>

@@ -10,11 +10,11 @@
 }
 
 #subjectMenu {
-    background: #ffffff;
+    background: var(--surface);
     border-radius: 16px;
     padding: 16px;
-    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.1);
-    border: 1px solid #e5e7eb;
+    box-shadow: var(--shadow-1);
+    border: 1px solid var(--border);
     width: 320px;
     flex-shrink: 0;
     position: sticky;
@@ -25,11 +25,11 @@
 
 .calendar-card {
     flex-grow: 1;
-    background: #fff;
+    background: var(--surface);
     border-radius: 16px;
     padding: 12px;
-    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
-    border: 1px solid #e5e7eb;
+    box-shadow: var(--shadow-2);
+    border: 1px solid var(--border);
     min-width: 0;
     /* Important for flex children and overflow */
 }
@@ -48,7 +48,7 @@
         /* Increased to give more space for the lists */
         position: relative;
         top: 0;
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        box-shadow: var(--shadow-compact);
     }
 
     .calendar-card {
@@ -63,7 +63,7 @@
 }
 
 .footer {
-    color: rgba(0, 0, 0, 0.55);
+    color: var(--text-muted);
     font-size: 12px;
     max-width: 1000px;
     width: 96%;
@@ -72,8 +72,8 @@
 }
 
 .footer code {
-    color: rgba(0, 0, 0, 0.75);
-    background: rgba(0, 0, 0, 0.06);
+    color: var(--text);
+    background: var(--scrollbar-track);
     padding: 1px 5px;
     border-radius: 6px;
 }

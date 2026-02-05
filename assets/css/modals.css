@@ -17,14 +17,14 @@
 
 .modal-content {
     position: relative;
-    background-color: #fff;
+    background-color: var(--modal-card-bg);
     padding: 24px;
     border-radius: 16px;
     width: 90%;
     max-width: 500px;
     max-height: 85vh;
     overflow-y: auto;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--modal-shadow);
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -32,7 +32,7 @@
 
 .modal-overlay.show {
     backdrop-filter: blur(4px);
-    background-color: rgba(15, 23, 42, 0.7);
+    background-color: var(--modal-overlay);
 }
 
 .modal-content.show {
@@ -47,18 +47,18 @@
     cursor: pointer;
     font-size: 20px;
     font-weight: bold;
-    color: #000;
+    color: var(--modal-text);
 }
 
 .close-button:hover {
-    color: #f00;
+    color: var(--danger);
 }
 
 /* Google Sync Modal (Card Pattern) */
 .modal-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--modal-backdrop);
     backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
@@ -82,12 +82,12 @@
 }
 
 .modal-card {
-    background: white;
+    background: var(--modal-card-bg);
     width: 90%;
     max-width: 400px;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: var(--modal-card-shadow);
     animation: slideUp 0.3s ease;
 }
 
@@ -105,7 +105,7 @@
 
 .modal-header {
     padding: 16px 20px;
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid var(--modal-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -114,14 +114,14 @@
 .modal-header h3 {
     margin: 0;
     font-size: 18px;
-    color: #111827;
+    color: var(--modal-text);
 }
 
 .modal-close {
     background: none;
     border: none;
     font-size: 24px;
-    color: #9ca3af;
+    color: var(--modal-text-subtle);
     cursor: pointer;
     padding: 0;
     line-height: 1;
@@ -134,7 +134,7 @@
 .modal-body p {
     margin: 0 0 16px 0;
     font-size: 14px;
-    color: #4b5563;
+    color: var(--modal-text-muted);
 }
 
 .date-range-inputs {
@@ -148,28 +148,30 @@
     display: block;
     font-size: 12px;
     font-weight: 600;
-    color: #374151;
+    color: var(--text-muted);
     margin-bottom: 4px;
 }
 
 .date-input-group input {
     width: 100%;
     padding: 8px;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--modal-input-border);
     border-radius: 6px;
     font-family: inherit;
     font-size: 14px;
+    background: var(--surface);
+    color: var(--text);
 }
 
 .subtle-info {
     font-size: 11px !important;
-    color: #9ca3af !important;
+    color: var(--modal-text-subtle) !important;
     margin: 0 !important;
 }
 
 .modal-footer {
     padding: 16px 20px;
-    background: #f9fafb;
+    background: var(--modal-footer-bg);
     display: flex;
     justify-content: flex-end;
     gap: 12px;
