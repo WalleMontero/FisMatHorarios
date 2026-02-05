@@ -10,10 +10,6 @@ const COLOR_KEY = "fastweb_section_colors_v1";
 const DAY_LANES = new Map(); // day -> element
 let cachedSlotHeightPx = null;
 let layoutTimer = null;
-const pinnedKeys = new Set();
-const deselectTimers = new Map();
-const pendingPromoteKeys = new Set();
-const promoteTimers = new Map();
 
 function minutesFromHHMM(hhmm) {
   const [h, m] = hhmm.split(":").map(Number);
@@ -74,54 +70,6 @@ function setSectionColor(key, color) {
 function setSelectedCount(n) {
   const el = document.getElementById("selectedCount");
   el.textContent = String(n);
-}
-
-function scheduleDemote(key) {
-  pinnedKeys.add(key);
-  if (deselectTimers.has(key)) {
-    clearTimeout(deselectTimers.get(key));
-  }
-  const timer = setTimeout(() => {
-    pinnedKeys.delete(key);
-    deselectTimers.delete(key);
-    if (window.__subjectsData) buildSubjectMenu(window.__subjectsData);
-  }, 5000);
-  deselectTimers.set(key, timer);
-}
-
-function cancelDemote(key) {
-  if (deselectTimers.has(key)) {
-    clearTimeout(deselectTimers.get(key));
-    deselectTimers.delete(key);
-  }
-  pinnedKeys.delete(key);
-}
-
-function schedulePromote(key) {
-  pendingPromoteKeys.add(key);
-  if (promoteTimers.has(key)) {
-    clearTimeout(promoteTimers.get(key));
-  }
-  const timer = setTimeout(() => {
-    // Solo promover si sigue seleccionado
-    const selected = new Set(loadSelectedSections());
-    if (selected.has(key)) {
-      pendingPromoteKeys.delete(key);
-      if (window.__subjectsData) buildSubjectMenu(window.__subjectsData);
-    } else {
-      pendingPromoteKeys.delete(key);
-    }
-    promoteTimers.delete(key);
-  }, 5000);
-  promoteTimers.set(key, timer);
-}
-
-function cancelPromote(key) {
-  if (promoteTimers.has(key)) {
-    clearTimeout(promoteTimers.get(key));
-    promoteTimers.delete(key);
-  }
-  pendingPromoteKeys.delete(key);
 }
 
 function getSlotHeightPx() {
@@ -237,127 +185,137 @@ function buildSubjectMenu(subjectsData) {
   subjectList.innerHTML = "";
   if (loadingState) loadingState.hidden = true;
   let added = 0;
-  const entries = [];
 
   const subjectNames = Object.keys(subjectsData).sort((a, b) => a.localeCompare(b));
   for (const subjectName of subjectNames) {
     const subject = subjectsData[subjectName];
     if (!subjectMatchesQuery(subjectName, subject, query)) continue;
     const sections = subject?.Secciones ? Object.keys(subject.Secciones) : [];
+    sections.sort((a, b) => a.localeCompare(b));
     for (const secId of sections) {
       const combinedKey = `${subjectName}|${secId}`;
-      entries.push({
-        subjectName,
-        subject,
-        secId,
-        combinedKey,
-        isSelected: selected.has(combinedKey),
-        isPinned: pinnedKeys.has(combinedKey),
-        isPendingPromote: pendingPromoteKeys.has(combinedKey),
+      const checkboxId = `subj-${combinedKey}`;
+
+      const label = document.createElement("label");
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.value = combinedKey;
+      cb.id = checkboxId;
+      cb.checked = selected.has(combinedKey);
+
+      cb.addEventListener("change", () => {
+        const next = new Set(loadSelectedSections());
+        if (cb.checked) next.add(combinedKey);
+        else next.delete(combinedKey);
+        saveSelectedSections(Array.from(next));
+        setSelectedCount(next.size);
+        label.classList.toggle("selected", cb.checked);
+        buildSubjectMenu(subjectsData);
+        renderSelectedSections(subjectsData, Array.from(next));
       });
+
+      const meta = [];
+      if (subject?.Clave) meta.push(subject.Clave);
+      if (subject?.Area) meta.push(subject.Area);
+      if (subject?.Semestre != null) meta.push(`S${subject.Semestre}`);
+
+      const textWrap = document.createElement("div");
+      textWrap.classList.add("subject-text");
+
+      const title = document.createElement("div");
+      title.classList.add("subject-title");
+      title.textContent = `${subjectName} · S${secId}`;
+
+      const metaLine = document.createElement("div");
+      metaLine.classList.add("subject-meta");
+      metaLine.textContent = meta.join(" · ");
+
+      textWrap.appendChild(title);
+      if (metaLine.textContent) textWrap.appendChild(metaLine);
+
+      label.appendChild(cb);
+      label.appendChild(textWrap);
+      if (cb.checked) label.classList.add("selected");
+      subjectList.appendChild(label);
+      added += 1;
     }
   }
+  if (emptyState) emptyState.hidden = added > 0;
 
-  const promoted = [];
-  const pinned = [];
-  const rest = [];
-  for (const entry of entries) {
-    if (entry.isSelected && !entry.isPendingPromote) promoted.push(entry);
-    else if (entry.isPinned) pinned.push(entry);
-    else rest.push(entry);
+  renderSelectedPanel(subjectsData, Array.from(selected));
+}
+
+function renderSelectedPanel(subjectsData, selectedKeys) {
+  const container = document.getElementById("selectedList");
+  if (!container) return;
+  container.innerHTML = "";
+
+  if (!selectedKeys.length) {
+    const empty = document.createElement("div");
+    empty.classList.add("selected-empty");
+    empty.textContent = "Ninguna seleccionada";
+    container.appendChild(empty);
+    return;
   }
-  const orderedEntries = promoted.concat(pinned, rest);
 
-  for (const entry of orderedEntries) {
-    const { subjectName, subject, secId, combinedKey, isSelected } = entry;
-    const checkboxId = `subj-${combinedKey}`;
+  const sorted = selectedKeys
+    .map((key) => {
+      const [subjectName, secId] = key.split("|");
+      return { key, subjectName, secId };
+    })
+    .sort((a, b) => a.subjectName.localeCompare(b.subjectName) || a.secId.localeCompare(b.secId));
 
-    const label = document.createElement("label");
+  for (const item of sorted) {
+    const row = document.createElement("div");
+    row.classList.add("selected-item");
+
     const cb = document.createElement("input");
     cb.type = "checkbox";
-    cb.value = combinedKey;
-    cb.id = checkboxId;
-    cb.checked = isSelected;
-
+    cb.checked = true;
+    cb.classList.add("selected-checkbox");
     cb.addEventListener("change", () => {
       const next = new Set(loadSelectedSections());
-      if (cb.checked) {
-        next.add(combinedKey);
-        cancelDemote(combinedKey);
-        schedulePromote(combinedKey);
-      } else {
-        next.delete(combinedKey);
-        cancelPromote(combinedKey);
-        scheduleDemote(combinedKey);
-      }
+      next.delete(item.key);
       saveSelectedSections(Array.from(next));
       setSelectedCount(next.size);
-      label.classList.toggle("selected", cb.checked);
       buildSubjectMenu(subjectsData);
       renderSelectedSections(subjectsData, Array.from(next));
     });
 
-    const meta = [];
-    if (subject?.Clave) meta.push(subject.Clave);
-    if (subject?.Area) meta.push(subject.Area);
-    if (subject?.Semestre != null) meta.push(`S${subject.Semestre}`);
+    const label = document.createElement("div");
+    label.classList.add("selected-name");
+    label.textContent = `${item.subjectName} · ${item.secId}`;
 
-    const textWrap = document.createElement("div");
-    textWrap.classList.add("subject-text");
+    const swatch = document.createElement("button");
+    swatch.type = "button";
+    swatch.classList.add("color-swatch");
+    const currentColor = getSectionColor(item.key, item.subjectName);
+    swatch.style.backgroundColor = currentColor;
+    swatch.setAttribute("title", "Cambiar color");
 
-    const title = document.createElement("div");
-    title.classList.add("subject-title");
-    title.textContent = `${subjectName} · S${secId}`;
+    const colorInput = document.createElement("input");
+    colorInput.type = "color";
+    colorInput.classList.add("color-input");
+    colorInput.value = currentColor;
 
-    const metaLine = document.createElement("div");
-    metaLine.classList.add("subject-meta");
-    metaLine.textContent = meta.join(" · ");
+    swatch.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      colorInput.click();
+    });
+    colorInput.addEventListener("change", (e) => {
+      const color = e.target.value;
+      setSectionColor(item.key, color);
+      swatch.style.backgroundColor = color;
+      renderSelectedSections(subjectsData, selectedKeys);
+    });
 
-    textWrap.appendChild(title);
-    if (metaLine.textContent) textWrap.appendChild(metaLine);
-
-    label.appendChild(cb);
-    label.appendChild(textWrap);
-    if (isSelected) {
-      const actions = document.createElement("div");
-      actions.classList.add("subject-actions");
-      const swatch = document.createElement("button");
-      swatch.type = "button";
-      swatch.classList.add("color-swatch");
-      const currentColor = getSectionColor(combinedKey, subjectName);
-      swatch.style.backgroundColor = currentColor;
-      swatch.setAttribute("title", "Cambiar color");
-
-      const colorInput = document.createElement("input");
-      colorInput.type = "color";
-      colorInput.classList.add("color-input");
-      colorInput.value = currentColor;
-
-      swatch.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        colorInput.click();
-      });
-      colorInput.addEventListener("click", (e) => {
-        e.stopPropagation();
-      });
-      colorInput.addEventListener("change", (e) => {
-        const color = e.target.value;
-        setSectionColor(combinedKey, color);
-        swatch.style.backgroundColor = color;
-        const currentSelected = loadSelectedSections();
-        renderSelectedSections(subjectsData, currentSelected);
-      });
-
-      actions.appendChild(swatch);
-      actions.appendChild(colorInput);
-      label.appendChild(actions);
-    }
-    if (cb.checked) label.classList.add("selected");
-    subjectList.appendChild(label);
-    added += 1;
+    row.appendChild(cb);
+    row.appendChild(label);
+    row.appendChild(swatch);
+    row.appendChild(colorInput);
+    container.appendChild(row);
   }
-  if (emptyState) emptyState.hidden = added > 0;
 }
 
 function sectionToMeetings(section) {
@@ -646,18 +604,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (e.key === "Escape") setMenuOpen(false);
   });
 
-  document.getElementById("clearBtn").addEventListener("click", () => {
-    saveSelectedSections([]);
-    setSelectedCount(0);
-    pinnedKeys.clear();
-    deselectTimers.forEach((t) => clearTimeout(t));
-    deselectTimers.clear();
-    pendingPromoteKeys.clear();
-    promoteTimers.forEach((t) => clearTimeout(t));
-    promoteTimers.clear();
-    buildSubjectMenu(subjectsData);
-    clearRenderedEvents();
-  });
 
   let resizeTimer = null;
   window.addEventListener("resize", () => {

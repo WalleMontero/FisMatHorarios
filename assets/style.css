@@ -228,10 +228,6 @@ input#searcher:focus {
   gap: 10px;
 }
 
-#clearBtn {
-  width: 100%;
-  justify-content: center;
-}
 
 .control-row input[type="number"] {
   width: 110px;
@@ -245,6 +241,53 @@ input#searcher:focus {
   overflow-y: auto;
   padding-right: 4px;
   flex: 1;
+}
+
+.selected-panel {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.selected-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.selected-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.selected-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: #e0f2fe;
+  border: 1px solid #38bdf8;
+  border-radius: 10px;
+  padding: 6px 8px;
+}
+
+.selected-name {
+  font-size: 12px;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.selected-empty {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.selected-checkbox {
+  accent-color: #0ea5e9;
 }
 
 .subject-text {
