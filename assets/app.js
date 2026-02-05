@@ -11,6 +11,196 @@ const DAY_LANES = new Map(); // day -> element
 let cachedSlotHeightPx = null;
 let layoutTimer = null;
 
+// Configuración de Google Calendar API
+const CLIENT_ID = "387315380682-frt987vv2h0maire8gtrlagoru3o8lj5.apps.googleusercontent.com";
+const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+let tokenClient;
+let gapiInited = false;
+let gisInited = false;
+
+function gapiLoaded() {
+  gapi.load("client", async () => {
+    await gapi.client.init({
+      discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+    });
+    gapiInited = true;
+    checkBeforeStart();
+  });
+}
+
+function gisLoaded() {
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID,
+    scope: SCOPES,
+    callback: "", // definido al momento de pedir el token
+  });
+  gisInited = true;
+  checkBeforeStart();
+}
+
+function checkBeforeStart() {
+  if (gapiInited && gisInited) {
+    console.log("Google API Ready");
+  }
+}
+
+async function handleSyncClick(subjectsData) {
+  const selectedKeys = loadSelectedSections();
+  if (!selectedKeys.length) {
+    alert("No has seleccionado ninguna materia.");
+    return;
+  }
+
+  // Mostrar el modal
+  const modal = document.getElementById("syncModal");
+  const startInput = document.getElementById("startDate");
+  const endInput = document.getElementById("endDate");
+
+  // Pre-rellenar con fechas sugeridas: Hoy y Hoy + 4 meses
+  const today = new Date();
+  startInput.value = today.toISOString().split("T")[0];
+  const fourMonths = new Date();
+  fourMonths.setMonth(today.getMonth() + 4);
+  endInput.value = fourMonths.toISOString().split("T")[0];
+
+  modal.hidden = false;
+
+  const confirmBtn = document.getElementById("confirmSync");
+  const cancelBtn = document.getElementById("cancelSync");
+  const closeBtn = document.getElementById("closeSyncModal");
+
+  const cleanup = () => {
+    modal.hidden = true;
+    confirmBtn.onclick = null;
+    cancelBtn.onclick = null;
+    closeBtn.onclick = null;
+  };
+
+  confirmBtn.onclick = async () => {
+    const startVal = startInput.value;
+    const endVal = endInput.value;
+    if (!startVal || !endVal) {
+      alert("Selecciona ambas fechas.");
+      return;
+    }
+    cleanup();
+    await startSyncProcess(subjectsData, startVal, endVal);
+  };
+
+  cancelBtn.onclick = cleanup;
+  closeBtn.onclick = cleanup;
+}
+
+async function startSyncProcess(subjectsData, startDateStr, endDateStr) {
+  const selectedKeys = loadSelectedSections();
+  const syncBtn = document.getElementById("syncGoogle");
+  const originalText = syncBtn.innerHTML;
+  syncBtn.disabled = true;
+  syncBtn.innerHTML = "Sincronizando...";
+
+  try {
+    const tokenResponse = await new Promise((resolve, reject) => {
+      tokenClient.callback = (resp) => {
+        if (resp.error) reject(resp);
+        else resolve(resp);
+      };
+      tokenClient.requestAccessToken({ prompt: "consent" });
+    });
+
+    if (!tokenResponse.access_token) {
+      syncBtn.disabled = false;
+      syncBtn.innerHTML = originalText;
+      return;
+    }
+
+    const startDate = new Date(startDateStr + "T00:00:00");
+    const endDate = new Date(endDateStr + "T23:59:59");
+    let totalEvents = 0;
+
+    for (const key of selectedKeys) {
+      const [subjectName, sectionId] = key.split("|");
+      const subject = subjectsData[subjectName];
+      const section = subject?.Secciones?.[sectionId];
+      if (!section) continue;
+
+      const entries = generateGCalEntriesForAPI(subjectName, sectionId, section, startDate, endDate);
+      for (const entry of entries) {
+        await gapi.client.calendar.events.insert({
+          calendarId: "primary",
+          resource: entry,
+        });
+        totalEvents++;
+      }
+    }
+
+    alert(`¡Éxito! Se han añadido ${totalEvents} bloques de horario.`);
+  } catch (err) {
+    console.error(err);
+    alert("Error al sincronizar. Revisa la consola.");
+  } finally {
+    syncBtn.disabled = false;
+    syncBtn.innerHTML = originalText;
+  }
+}
+
+function generateGCalEntriesForAPI(subjectName, sectionId, section, rangeStart, rangeEnd) {
+  const dayMap = { "Lunes": "MO", "Martes": "TU", "Miércoles": "WE", "Jueves": "TH", "Viernes": "FR", "Sábado": "SA", "Domingo": "SU" };
+  const daysOrdered = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+
+  const meetings = sectionToMeetings(section);
+  const groups = new Map();
+  for (const m of meetings) {
+    const key = `${m.startMin}-${m.endMin}-${m.salon}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(m);
+  }
+
+  const events = [];
+  const formatUntil = (date) => date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+
+  for (const groupMeetings of groups.values()) {
+    const meetingDayIndices = groupMeetings.map(m => daysOrdered.indexOf(m.day));
+    let firstEventDate = null;
+    let prototypeMeeting = null;
+
+    for (let i = 0; i < 7; i++) {
+      const checkDate = new Date(rangeStart);
+      checkDate.setDate(rangeStart.getDate() + i);
+      const dayIdx = checkDate.getDay();
+      if (meetingDayIndices.includes(dayIdx)) {
+        firstEventDate = checkDate;
+        prototypeMeeting = groupMeetings.find(m => daysOrdered.indexOf(m.day) === dayIdx);
+        break;
+      }
+    }
+    if (!firstEventDate) continue;
+
+    const getISO = (date, min) => {
+      const d = new Date(date);
+      d.setHours(0, 0, 0, 0);
+      d.setMinutes(min);
+      return d.toISOString();
+    };
+
+    const byDays = groupMeetings.map(mtg => dayMap[mtg.day]).join(",");
+    const untilStr = formatUntil(rangeEnd);
+
+    events.push({
+      summary: `${subjectName} (S${sectionId})`,
+      location: prototypeMeeting.salon || "Sin asignar",
+      description: `Profesor: ${section.Profesor || "N/A"}\nGenerado por FisMat Horarios FastWeb`,
+      start: { dateTime: getISO(firstEventDate, prototypeMeeting.startMin), timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone },
+      end: { dateTime: getISO(firstEventDate, prototypeMeeting.endMin), timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone },
+      recurrence: [`RRULE:FREQ=WEEKLY;BYDAY=${byDays};UNTIL=${untilStr}`],
+    });
+  }
+  return events;
+}
+
+// Inyección de cargadores de scripts
+window.gapiLoaded = gapiLoaded;
+window.gisLoaded = gisLoaded;
+
 function minutesFromHHMM(hhmm) {
   const [h, m] = hhmm.split(":").map(Number);
   return h * 60 + (m || 0);
@@ -600,12 +790,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Abrir/cerrar menú (móvil)
   const setMenuOpen = (open) => {
-    menu.classList.toggle("active", open);
-    backdrop.classList.toggle("active", open);
+    if (menu) menu.classList.toggle("active", open);
+    if (backdrop) backdrop.classList.toggle("active", open);
     document.body.classList.toggle("no-scroll", open && window.innerWidth <= 900);
   };
-  menuToggle.addEventListener("click", () => setMenuOpen(true));
-  backdrop.addEventListener("click", () => setMenuOpen(false));
+
+  if (menuToggle) menuToggle.addEventListener("click", () => setMenuOpen(true));
+  if (backdrop) backdrop.addEventListener("click", () => setMenuOpen(false));
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") setMenuOpen(false);
   });
@@ -640,5 +831,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderSelectedSections(data, currentSelected);
     });
     ro.observe(calendarEl);
+  }
+
+  const syncBtn = document.getElementById("syncGoogle");
+  if (syncBtn) {
+    syncBtn.addEventListener("click", () => handleSyncClick(subjectsData));
   }
 });

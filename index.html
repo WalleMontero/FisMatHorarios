@@ -1,60 +1,95 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" />
-    <title>Visualizador de horarios</title>
-    <link rel="stylesheet" href="assets/style.css" />
-  </head>
-  <body>
-    <div id="menuBackdrop" class="menu-backdrop"></div>
-    <div class="container">
-      <aside id="subjectMenu" aria-label="Materias">
 
-        <div class="menu-header">
-          <div>
-            <h3>Materias</h3>
-            <p class="subtle">Selecciona secciones para ver el horario</p>
-          </div>
-          <div class="chip-block" title="Secciones seleccionadas">
-            <div class="chip" id="selectedCount">0</div>
-            <span>sel.</span>
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" />
+  <title>Visualizador de horarios</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+
+<body>
+  <div id="menuBackdrop" class="menu-backdrop"></div>
+  <div class="container">
+    <aside id="subjectMenu" aria-label="Materias">
+
+      <div class="menu-header">
+        <div>
+          <h3>Materias</h3>
+          <p class="subtle">Selecciona secciones para ver el horario</p>
+        </div>
+        <div class="chip-block" title="Secciones seleccionadas">
+          <div class="chip" id="selectedCount">0</div>
+          <span>sel.</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="search-wrapper">
+          <span class="search-icon">🔎</span>
+          <input type="search" id="searcher" placeholder="Buscar (nombre, clave, área)..." autocomplete="off" />
         </div>
 
-        <div class="controls">
-          <div class="search-wrapper">
-            <span class="search-icon">🔎</span>
-            <input
-              type="search"
-              id="searcher"
-              placeholder="Buscar (nombre, clave, área)..."
-              autocomplete="off"
-            />
-          </div>
+      </div>
 
+      <div class="selected-panel">
+        <div class="selected-title">
+          <span>Seleccionadas</span>
+          <button id="syncGoogle" class="sync-btn" title="Sincronizar todo con Google Calendar">
+            <img src="https://www.gstatic.com/images/branding/product/1x/calendar_2020q4_48dp.png" alt="G" width="16"
+              height="16" />
+            Sincronizar
+          </button>
         </div>
+        <div id="selectedList" class="selected-list"></div>
+      </div>
 
-        <div class="selected-panel">
-          <div class="selected-title">Seleccionadas</div>
-          <div id="selectedList" class="selected-list"></div>
-        </div>
+      <div id="subjectList" class="subject-list"></div>
+      <div id="emptyState" class="empty-state" hidden>No hay resultados.</div>
+      <div id="loadingState" class="empty-state">Cargando materias…</div>
+    </aside>
+    <div class="calendar-card">
+      <div id="calendar"></div>
 
-        <div id="subjectList" class="subject-list"></div>
-        <div id="emptyState" class="empty-state" hidden>No hay resultados.</div>
-        <div id="loadingState" class="empty-state">Cargando materias…</div>
-      </aside>
-        <div class="calendar-card">
-          <div id="calendar"></div>
-          
-          <div id="calendarEmpty" class="calendar-empty" hidden>
-            Selecciona secciones para ver el horario.
-          </div>
-        </div>
-      </main>
+      <div id="calendarEmpty" class="calendar-empty" hidden>
+        Selecciona secciones para ver el horario.
+      </div>
     </div>
+    </main>
+  </div>
 
-    <script src="assets/app.js"></script>
-  </body>
+  <!-- Modal de Sincronización -->
+  <div id="syncModal" class="modal-backdrop" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Sincronizar con Google</h3>
+        <button class="modal-close" id="closeSyncModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Selecciona el periodo del semestre para crear los eventos:</p>
+        <div class="date-range-inputs">
+          <div class="date-input-group">
+            <label for="startDate">Fecha de inicio</label>
+            <input type="date" id="startDate" required />
+          </div>
+          <div class="date-input-group">
+            <label for="endDate">Fecha de fin</label>
+            <input type="date" id="endDate" required />
+          </div>
+        </div>
+        <p class="subtle-info">Los eventos se repetirán semanalmente entre estas fechas.</p>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelSync" class="btn-secondary">Cancelar</button>
+        <button id="confirmSync" class="btn-primary">Sincronizar ahora</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://accounts.google.com/gsi/client" async defer onload="gisLoaded()"></script>
+  <script src="https://apis.google.com/js/api.js" async defer onload="gapiLoaded()"></script>
+  <script src="assets/app.js"></script>
+</body>
+
 </html>
