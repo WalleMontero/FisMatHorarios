@@ -112,6 +112,18 @@ input#searcher:focus {
 }
 
 /* Panels & Lists */
+.subject-panel {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+}
+
 .subject-list {
     padding-top: 6px;
     display: flex;
@@ -120,6 +132,7 @@ input#searcher:focus {
     overflow-y: auto;
     padding-right: 4px;
     flex: 1;
+    min-height: 0;
 }
 
 .selected-panel {
@@ -130,7 +143,7 @@ input#searcher:focus {
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
-    height: 500px !important;
+    max-height: 500px;
 }
 
 
