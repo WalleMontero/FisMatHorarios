@@ -1,0 +1,318 @@
+/* --- BODY Y CONTENEDORES GENERALES --- */
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Montserrat";
+  margin: 0;
+  background-color: rgb(231, 231, 231);
+  min-width: 340px;
+}
+
+.container {
+  height: 96vh;
+  width: 100%;
+}
+
+div.button-container {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.muted {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+}
+
+/* --- BOTONES --- */
+button {
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95em;
+}
+
+button.secondary {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+button:hover {
+  filter: brightness(0.95);
+}
+
+#menuToggle {
+  z-index: 900;
+  margin-left: 2%;
+}
+
+/* --- MENÚ LATERAL --- */
+#subjectMenu label {
+  display: block;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+#subjectMenu input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+#closeMenu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 25px;
+}
+
+.calendar-container {
+  display: flex;
+  width: auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+input#searcher {
+  width: 100%;
+  height: 34px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0 10px;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.control-row input[type="number"] {
+  width: 110px;
+}
+
+.subject-list {
+  padding-top: 6px;
+}
+
+.footer {
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 12px;
+  max-width: 1000px;
+  width: 96%;
+  margin-bottom: 10px;
+}
+
+.footer code {
+  color: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.06);
+  padding: 1px 5px;
+  border-radius: 6px;
+}
+
+@media (min-width: 1201px) {
+  #subjectMenu {
+    left: 0;
+    max-width: 320px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.651);
+    color: white;
+    padding: 20px;
+    overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    position: relative;
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: 320px auto;
+  }
+
+  #closeMenu {
+    display: none;
+  }
+
+  #menuToggle {
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  #subjectMenu {
+    position: fixed;
+    left: -340px;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background: rgb(24, 24, 24);
+    color: white;
+    padding: 20px;
+    overflow-y: auto;
+    transition: left 0.3s ease-in-out;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+  }
+
+  #subjectMenu.active {
+    left: 0;
+  }
+
+  .calendar-container {
+    max-width: 1000px;
+  }
+}
+
+/* --- CALENDARIO GENERAL (GRID PRINCIPAL) --- */
+#calendar {
+  background-color: white;
+  display: grid;
+  grid-template-columns: 36px repeat(5, 1fr 1fr);
+  grid-template-rows: 50px repeat(26, minmax(22px, auto));
+  width: 96%;
+  max-width: 1000px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 8px 5px 15px 5px;
+}
+
+.day-header {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+div.day-header div.content {
+  text-align: center;
+  font-weight: bold;
+  line-height: 50px;
+  border-radius: 5px;
+}
+
+.time-label {
+  text-align: right;
+  padding-right: 6px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.slot-cell {
+  border-bottom: 1px solid rgba(209, 209, 209, 0.32);
+  border-left: 4px solid white;
+  border-right: 4px solid white;
+  background-color: #efefef;
+  min-width: 85px;
+}
+
+/* --- EVENTOS --- */
+.event {
+  color: #1a1a1a;
+  border-radius: 6px;
+  margin: 4px;
+  padding: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.event p {
+  margin: 0;
+}
+
+/* --- MODAL --- */
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: background-color 0.3s ease-out;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 86%;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.modal-overlay.show {
+  backdrop-filter: blur(2px);
+  background-color: rgba(36, 36, 36, 0.568);
+}
+
+.modal-content.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+}
+
+.close-button:hover {
+  color: #f00;
+}
+
+@media (max-width: 600px) {
+  .event {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    row-gap: 2px;
+    white-space: normal;
+    word-wrap: break-word;
+  }
+}

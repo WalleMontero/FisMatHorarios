@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" />
+    <title>Visualizador de horarios</title>
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <aside id="subjectMenu" aria-label="Materias">
+        <button id="closeMenu" type="button" aria-label="Cerrar">X</button>
+        <h3>Materias</h3>
+
+        <div class="controls">
+          <input
+            type="search"
+            id="searcher"
+            placeholder="Buscar (nombre, clave, área)..."
+            autocomplete="off"
+          />
+
+          <div class="control-row">
+            <div class="muted" id="selectedCount">0 seleccionadas</div>
+            <button id="clearBtn" type="button" class="secondary">Limpiar</button>
+          </div>
+        </div>
+
+        <div id="subjectList" class="subject-list"></div>
+      </aside>
+
+      <main class="calendar-container">
+        <div class="button-container">
+          <button id="menuToggle" type="button">☰ Materias</button>
+        </div>
+        <div id="calendar" aria-label="Calendario"></div>
+        <div class="footer muted">
+          Tip: en GitHub Pages esto funciona tal cual; en local usa un servidor (ej. <code>python3 -m http.server</code>).
+        </div>
+      </main>
+    </div>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>

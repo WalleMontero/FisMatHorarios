@@ -1,0 +1,2110 @@
+{
+    "MECÁNICA": {
+        "Clave": "TC-I-4",
+        "Requisitos": "***",
+        "Creditos": 8,
+        "Area": "Tronco Común",
+        "Semestre": 1,
+        "Secciones": {
+            "01": {
+                "Profesor": "DAGOBERTO CARDONA RAMÍREZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 3"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 3"
+                    },
+                    "3": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "11:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 3"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "ÁLGEBRA I": {
+        "Clave": "TC-I-2",
+        "Requisitos": "***",
+        "Creditos": 7,
+        "Area": "Tronco Común",
+        "Semestre": 1,
+        "Secciones": {
+            "01": {
+                "Profesor": "GLORIA ANDABLO REYES",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 3"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 3"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "CÁLCULO DIFERENCIAL": {
+        "Clave": "TC-I-1",
+        "Requisitos": "***",
+        "Creditos": 10,
+        "Area": "Tronco Común",
+        "Semestre": 1,
+        "Secciones": {
+            "01": {
+                "Profesor": "GLORIA ANDABLO REYES",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "14:00",
+                            "16:00"
+                        ],
+                        "Salon": "Salon 3"
+                    },
+                    "2": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "14:00",
+                            "16:00"
+                        ],
+                        "Salon": "Salon 3"
+                    },
+                    "3": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "14:00",
+                            "16:00"
+                        ],
+                        "Salon": "Salon 3"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "LABORATORIO DE MECÁNICA": {
+        "Clave": "TC-I-5",
+        "Requisitos": "***",
+        "Creditos": 6,
+        "Area": "Tronco Común",
+        "Semestre": 1,
+        "Secciones": {
+            "01": {
+                "Profesor": "DAGOBERTO CARDONA RAMÍREZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Laboratorio Fisica General"
+                    },
+                    "2": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Laboratorio Fisica General"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "GEOMETRÍA ANALÍTICA": {
+        "Clave": "TC-I-3",
+        "Requisitos": "***",
+        "Creditos": 7,
+        "Area": "Tronco Común",
+        "Semestre": 1,
+        "Secciones": {
+            "01": {
+                "Profesor": "MUSTAPHA LAYHANE",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 3"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 3"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "CÁLCULO INTEGRAL": {
+        "Clave": "TC-II-1",
+        "Requisitos": "***",
+        "Creditos": 10,
+        "Area": "Tronco Común",
+        "Semestre": 2,
+        "Secciones": {
+            "01": {
+                "Profesor": "ARMANDO SEPULVEDA LÓPEZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 1"
+                    },
+                    "2": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 1"
+                    },
+                    "3": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 1"
+                    }
+                }
+            },
+            "02": {
+                "Profesor": "GLORIA ANDABLO REYES",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 2"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "14:00",
+                            "16:00"
+                        ],
+                        "Salon": "Salon 2"
+                    },
+                    "3": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 2"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "PROGRAMACIÓN I": {
+        "Clave": "TC-II-3",
+        "Requisitos": "***",
+        "Creditos": 8,
+        "Area": "Tronco Común",
+        "Semestre": 2,
+        "Secciones": {
+            "01": {
+                "Profesor": "KARINA MARIELA FIGUEROA MORA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Laboratorio Mac"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Laboratorio Mac"
+                    }
+                }
+            },
+            "02": {
+                "Profesor": "JESÚS ORTÍZ BEJAR",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Laboratorio Linux"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Laboratorio Linux"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "FLUIDOS Y ONDAS": {
+        "Clave": "TC-II-4",
+        "Requisitos": "***",
+        "Creditos": 8,
+        "Area": "Tronco Común",
+        "Semestre": 2,
+        "Secciones": {
+            "01": {
+                "Profesor": "ISIDRO ARANDA SÁNCHEZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 1"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 1"
+                    },
+                    "3": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "12:00",
+                            "13:00"
+                        ],
+                        "Salon": "Salon 1"
+                    }
+                }
+            },
+            "02": {
+                "Profesor": "GABRIEL ARROYO CORREA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "12:00",
+                            "13:00"
+                        ],
+                        "Salon": "Salon 2"
+                    },
+                    "2": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 2"
+                    },
+                    "3": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 2"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "ÁLGEBRA II": {
+        "Clave": "TC-II-2",
+        "Requisitos": "***",
+        "Creditos": 7,
+        "Area": "Tronco Común",
+        "Semestre": 2,
+        "Secciones": {
+            "01": {
+                "Profesor": "HOMERO DÍAZ MARÍN",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 1"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 1"
+                    }
+                }
+            },
+            "02": {
+                "Profesor": "HOMERO DÍAZ MARÍN",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 2"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 2"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "LABORATORIO DE FLUIDOS Y ONDAS": {
+        "Clave": "TC-II-5",
+        "Requisitos": "***",
+        "Creditos": 6,
+        "Area": "Tronco Común",
+        "Semestre": 2,
+        "Secciones": {
+            "01": {
+                "Profesor": "GABRIEL ARROYO CORREA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "16:00",
+                            "18:00"
+                        ],
+                        "Salon": "LABORATORIO DE FLUIDOS Y ONDAS"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "18:00",
+                            "20:00"
+                        ],
+                        "Salon": "LABORATORIO DE FLUIDOS Y ONDAS"
+                    }
+                }
+            },
+            "02": {
+                "Profesor": "GABRIEL ARROYO CORREA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "16:00",
+                            "18:00"
+                        ],
+                        "Salon": "LABORATORIO DE FLUIDOS Y ONDAS"
+                    },
+                    "2": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "18:00",
+                            "20:00"
+                        ],
+                        "Salon": "LABORATORIO DE FLUIDOS Y ONDAS"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "MÉTODOS NUMÉRICOS": {
+        "Clave": "M2",
+        "Requisitos": "TC6, TC7, TC8",
+        "Creditos": 8,
+        "Area": "Matemáticas",
+        "Semestre": 3,
+        "Secciones": {
+            "01": {
+                "Profesor": "JOSÉ ANTONIO GONZÁLEZ CERVERA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Laboratorio Mac"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Laboratorio Mac"
+                    },
+                    "3": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "09:00",
+                            "10:00"
+                        ],
+                        "Salon": "Laboratorio Mac"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "ÁLGEBRA III": {
+        "Clave": "TC-III-2",
+        "Requisitos": "***",
+        "Creditos": 7,
+        "Area": "Tronco Común",
+        "Semestre": 3,
+        "Secciones": {
+            "01": {
+                "Profesor": "REYNALDO ROJAS HERNÁNDEZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 4"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 4"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "ALGORITMOS I": {
+        "Clave": "C1",
+        "Requisitos": "TC7, TC8",
+        "Creditos": 8,
+        "Area": "Ciencias de la Computación",
+        "Semestre": 3,
+        "Secciones": {
+            "01": {
+                "Profesor": "KARINA MARIELA FIGUEROA MORA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Laboratorio Mac"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Laboratorio Mac"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "MATEMÁTICAS DISCRETAS I": {
+        "Clave": "M12",
+        "Requisitos": "TC2",
+        "Creditos": 8,
+        "Area": "Matemáticas",
+        "Semestre": 3,
+        "Secciones": {
+            "01": {
+                "Profesor": "MARÍA LUISA PÉREZ SEGUÍ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 4"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 4"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "ELECTROMAGNETISMO": {
+        "Clave": "TC-III-4",
+        "Requisitos": "***",
+        "Creditos": 7,
+        "Area": "Tronco Común",
+        "Semestre": 3,
+        "Secciones": {
+            "01": {
+                "Profesor": "MARY CARMEN PEÑA GOMAR",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 4"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 4"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "LABORATORIO DE ELECTROMAGNETISMO": {
+        "Clave": "TC-III-5",
+        "Requisitos": "***",
+        "Creditos": 6,
+        "Area": "Tronco Común",
+        "Semestre": 3,
+        "Secciones": {
+            "01": {
+                "Profesor": "MARY CARMEN PEÑA GOMAR",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Laboratorio Electro"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Laboratorio Electro"
+                    },
+                    "3": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "16:00",
+                            "18:00"
+                        ],
+                        "Salon": "Laboratorio Electro"
+                    },
+                    "4": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "18:00",
+                            "20:00"
+                        ],
+                        "Salon": "Laboratorio Electro"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "ÁLGEBRA IV": {
+        "Clave": "TC-IV-2",
+        "Requisitos": "***",
+        "Creditos": 7,
+        "Area": "Tronco Común",
+        "Semestre": 4,
+        "Secciones": {
+            "01": {
+                "Profesor": "LUIS VALERO ELIZONDO",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Laboratorio Linux"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Laboratorio Linux"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "PROGRAMACIÓN II": {
+        "Clave": "TC-IV-4",
+        "Requisitos": "***",
+        "Creditos": 8,
+        "Area": "Tronco Común",
+        "Semestre": 4,
+        "Secciones": {
+            "01": {
+                "Profesor": "FRANCISCO SHIDARTHA GUZMÁN MURILLO",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Laboratorio Linux"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Laboratorio Linux"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "VARIABLE COMPLEJA": {
+        "Clave": "TC-IV-1",
+        "Requisitos": "***",
+        "Creditos": 7,
+        "Area": "Tronco Común",
+        "Semestre": 4,
+        "Secciones": {
+            "01": {
+                "Profesor": "FRANCISCO DOMINGUEZ MOTA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "12:00",
+                            "13:00"
+                        ],
+                        "Salon": "Salon 5"
+                    },
+                    "2": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "12:00",
+                            "13:00"
+                        ],
+                        "Salon": "Salon 5"
+                    },
+                    "3": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "11:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 5"
+                    },
+                    "4": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "11:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 5"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "ECUACIONES DIFERENCIALES ORDINARIAS I": {
+        "Clave": "TC-IV-5",
+        "Requisitos": "***",
+        "Creditos": 7,
+        "Area": "Tronco Común",
+        "Semestre": 4,
+        "Secciones": {
+            "01": {
+                "Profesor": "REYNALDO ROJAS HERNÁNDEZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 5"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 5"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "CÁLCULO IV": {
+        "Clave": "TC15",
+        "Requisitos": "TC10, TC11",
+        "Creditos": 12,
+        "Area": "Tronco Común",
+        "Semestre": 4,
+        "Secciones": {
+            "01": {
+                "Profesor": "ELMAR WAGNER",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 5"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "09:00",
+                            "11:00"
+                        ],
+                        "Salon": "Salon 5"
+                    },
+                    "3": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 5"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "PROBABILIDAD Y ESTADÍSTICA": {
+        "Clave": "TC-IV-3",
+        "Requisitos": "***",
+        "Creditos": 7,
+        "Area": "Tronco Común",
+        "Semestre": 4,
+        "Secciones": {
+            "01": {
+                "Profesor": "GERARDO TINOCO RUIZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 5"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 5"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": true
+    },
+    "ANÁLISIS MATEMÁTICO I": {
+        "Clave": "M1",
+        "Requisitos": "TC10, TC11",
+        "Creditos": 10,
+        "Area": "Matemáticas",
+        "Semestre": 5,
+        "Secciones": {
+            "01": {
+                "Profesor": "MUSTAPHA LAYHANE",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 6"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 6"
+                    },
+                    "3": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "09:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 6"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "MÉTODOS MATEMÁTICOS DE LA FÍSICA I": {
+        "Clave": "F3",
+        "Requisitos": "TC10",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 5,
+        "Secciones": {
+            "01": {
+                "Profesor": "ISIDRO ARANDA SÁNCHEZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 6"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 6"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "ÁLGEBRA MODERNA": {
+        "Clave": "M4",
+        "Requisitos": "TC11",
+        "Creditos": 10,
+        "Area": "Matemáticas",
+        "Semestre": 5,
+        "Secciones": {
+            "01": {
+                "Profesor": "REYNALDO ROJAS HERNÁNDEZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 6"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 6"
+                    },
+                    "3": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "12:00",
+                            "13:00"
+                        ],
+                        "Salon": "Salon 6"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "FÍSICA MODERNA": {
+        "Clave": "TC19",
+        "Requisitos": "TC18",
+        "Creditos": 8,
+        "Area": "Tronco Común",
+        "Semestre": 5,
+        "Secciones": {
+            "01": {
+                "Profesor": "JOSÉ VEGA CABRERA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 6"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 6"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "MECÁNICA TEÓRICA": {
+        "Clave": "F8",
+        "Requisitos": "TC10, TC13, TC14",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 5,
+        "Secciones": {
+            "01": {
+                "Profesor": "EDUARDO TUTUTI HERNÁNDEZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 6"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 6"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "ÓPTICA": {
+        "Clave": "F6",
+        "Requisitos": "TC18",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 5,
+        "Secciones": {
+            "01": {
+                "Profesor": "MAURICIO ORTÍZ GUTIÉRREZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 6"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 6"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "LABORATORIO DE ÓPTICA I": {
+        "Clave": "F9",
+        "Requisitos": "F5",
+        "Creditos": 4,
+        "Area": "Física",
+        "Semestre": 5,
+        "Secciones": {
+            "01": {
+                "Profesor": "MAURICIO ORTÍZ GUTIÉRREZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "16:00",
+                            "18:00"
+                        ],
+                        "Salon": "Laboratorio Optica"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "18:00",
+                            "20:00"
+                        ],
+                        "Salon": "Laboratorio Optica"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "ECUACIONES DIFERENCIALES PARCIALES I": {
+        "Clave": "M23",
+        "Requisitos": "TC10, TC13",
+        "Creditos": 8,
+        "Area": "Matemáticas",
+        "Semestre": 6,
+        "Secciones": {
+            "01": {
+                "Profesor": "JOAQUÍN ESTEVEZ DELGADO",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 7"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 7"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "TEORÍA ELECTROMAGNÉTICA I": {
+        "Clave": "F10",
+        "Requisitos": "TC18, F7",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 6,
+        "Secciones": {
+            "01": {
+                "Profesor": "FERNANDO IGUAZÚ RAMÍREZ ZAVALETA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 7"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 7"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "ELECTRÓNICA I": {
+        "Clave": "F11",
+        "Requisitos": "TC13, TC18, F5",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 6,
+        "Secciones": {
+            "01": {
+                "Profesor": "MISAEL VIEYRA RíOS",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "16:00",
+                            "18:00"
+                        ],
+                        "Salon": "Laboratorio Electro"
+                    },
+                    "2": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "18:00",
+                            "20:00"
+                        ],
+                        "Salon": "Laboratorio Electro"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "RELATIVIDAD GENERAL I": {
+        "Clave": "F39",
+        "Requisitos": "TC19, F3, F8",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 6,
+        "Secciones": {
+            "01": {
+                "Profesor": "JOAQUÍN ESTEVEZ DELGADO",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 7"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 7"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "ANÁLISIS MATEMÁTICO II": {
+        "Clave": "M5",
+        "Requisitos": "M1",
+        "Creditos": 8,
+        "Area": "Matemáticas",
+        "Semestre": 6,
+        "Secciones": {
+            "01": {
+                "Profesor": "RIGOBERTO VERA MENDOZA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 7"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 7"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "TOPOLOGÍA": {
+        "Clave": "M8",
+        "Requisitos": "M1",
+        "Creditos": 8,
+        "Area": "Matemáticas",
+        "Semestre": 6,
+        "Secciones": {
+            "01": {
+                "Profesor": "FERNANDO HERNÁNDEZ HERNÁNDEZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 7"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 7"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "ESTADO SÓLIDO": {
+        "Clave": "S/C",
+        "Requisitos": "***",
+        "Creditos": 0,
+        "Area": "Desconocida",
+        "Semestre": 7,
+        "Secciones": {
+            "01": {
+                "Profesor": "SALOMÓN BORJAS GARCÍA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 8"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 8"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "TEORÍA DE MÓDULOS": {
+        "Clave": "M6",
+        "Requisitos": "TC16, M4",
+        "Creditos": 8,
+        "Area": "Matemáticas",
+        "Semestre": 7,
+        "Secciones": {
+            "01": {
+                "Profesor": "MUSTAPHA LAYHANE",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 8"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 8"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "GEOMETRÍA DIFERENCIAL": {
+        "Clave": "M10",
+        "Requisitos": "TC15",
+        "Creditos": 8,
+        "Area": "Matemáticas",
+        "Semestre": 7,
+        "Secciones": {
+            "01": {
+                "Profesor": "OSVALDO OSUNA CASTRO",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 8"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 8"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "CURRÍCULO Y EVALUACIÓN": {
+        "Clave": "E6",
+        "Requisitos": "E3, E4",
+        "Creditos": 8,
+        "Area": "Educación Matemática",
+        "Semestre": 7,
+        "Secciones": {
+            "01": {
+                "Profesor": "PATRICIA MANRRIQUEZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "14:00",
+                            "16:00"
+                        ],
+                        "Salon": "Salon 8"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "14:00",
+                            "16:00"
+                        ],
+                        "Salon": "Salon 8"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "DISEÑO Y DESARROLLO DE SOFTWARE EDUCATIVO I": {
+        "Clave": "E13",
+        "Requisitos": "TC8",
+        "Creditos": 8,
+        "Area": "Educación Matemática",
+        "Semestre": 7,
+        "Secciones": {
+            "01": {
+                "Profesor": "LUIS VALERO ELIZONDO",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Laboratorio Linux"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Laboratorio Linux"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "TEORÍA ELECTROMAGNÉTICA II": {
+        "Clave": "F37",
+        "Requisitos": "F10",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 7,
+        "Secciones": {
+            "01": {
+                "Profesor": "DAVID ESPINOSA GÓMEZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 8"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 8"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "MECÁNICA ESTADÍSTICA I": {
+        "Clave": "F15",
+        "Requisitos": "F4, F12",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 7,
+        "Secciones": {
+            "01": {
+                "Profesor": "LUCA TESSIERI",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 8"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 8"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "TEORÍA DE LA MEDIDA": {
+        "Clave": "M15",
+        "Requisitos": "M5",
+        "Creditos": 8,
+        "Area": "Matemáticas",
+        "Semestre": 7,
+        "Secciones": {
+            "01": {
+                "Profesor": "HOMERO DÍAZ MARÍN",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 8"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 8"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "ANÁLISIS FUNCIONAL": {
+        "Clave": "M16",
+        "Requisitos": "M5",
+        "Creditos": 8,
+        "Area": "Matemáticas",
+        "Semestre": 8,
+        "Secciones": {
+            "01": {
+                "Profesor": "ABDON CHOQUE RIVERO",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 11"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 11"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "RELATIVIDAD GENERAL II": {
+        "Clave": "F42",
+        "Requisitos": "F39",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 8,
+        "Secciones": {
+            "01": {
+                "Profesor": "TATJANA VUKASINAK",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 11"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 11"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "MECÁNICA CUÁNTICA I": {
+        "Clave": "F12",
+        "Requisitos": "TC19, F7, F8",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 8,
+        "Secciones": {
+            "01": {
+                "Profesor": "ALFREDO RAYA MONTAÑO",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 11"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 11"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "MÉTODOS MATEMÁTICOS DE LA FÍSICA III": {
+        "Clave": "F36",
+        "Requisitos": "F7",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 8,
+        "Secciones": {
+            "01": {
+                "Profesor": "HÉCTOR IGOR PÉREZ AGUILAR",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 11"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 11"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "FÍSICA DE FLUIDOS": {
+        "Clave": "F31",
+        "Requisitos": "F3, F4",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 9,
+        "Secciones": {
+            "01": {
+                "Profesor": "RICARDO BECERRIL BÁRCENAS",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 10"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "08:00",
+                            "10:00"
+                        ],
+                        "Salon": "Salon 10"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "MECÁNICA CUÁNTICA II": {
+        "Clave": "F13",
+        "Requisitos": "F12",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 9,
+        "Secciones": {
+            "01": {
+                "Profesor": "FERNANDO IGUAZÚ RAMÍREZ ZAVALETA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 10"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 10"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "LÓGICA": {
+        "Clave": "M27",
+        "Requisitos": "M9",
+        "Creditos": 8,
+        "Area": "Matemáticas",
+        "Semestre": 9,
+        "Secciones": {
+            "01": {
+                "Profesor": "ATZIMBA ALARCÓN OSEGUERA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 10"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 10"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "INTELIGENCIA ARTIFICIAL": {
+        "Clave": "C21",
+        "Requisitos": "TC10, TC11, TC13, C6",
+        "Creditos": 8,
+        "Area": "Ciencias de la Computación",
+        "Semestre": 9,
+        "Secciones": {
+            "01": {
+                "Profesor": "KARINA MARIELA FIGUEROA MORA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Laboratorio Mac"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Laboratorio Mac"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "FISICOQUÍMICA": {
+        "Clave": "F17",
+        "Requisitos": "TC19, F4",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 9,
+        "Secciones": {
+            "01": {
+                "Profesor": "GONZALO VIRAMONTES GAMBOA",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 10"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 10"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "INTRODUCCIÓN A LA TEORÍA CUÁNTICA DE CAMPOS": {
+        "Clave": "F44",
+        "Requisitos": "F12",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 10,
+        "Secciones": {
+            "01": {
+                "Profesor": "EDUARDO TUTUTI HERNÁNDEZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 1"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 1"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "INTRODUCCIÓN A LA CIENCIA DE LOS MATERIALES": {
+        "Clave": "F16",
+        "Requisitos": "TC19",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 10,
+        "Secciones": {
+            "01": {
+                "Profesor": "LUIS MARIANO HERNÁNDEZ RAMÍREZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 4"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 4"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "COSMOLOGÍA": {
+        "Clave": "F41",
+        "Requisitos": "TC19",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 10,
+        "Secciones": {
+            "01": {
+                "Profesor": "ULISES NUCAMENDI GOMEZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 10"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 10"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "TERMODINÁMICA": {
+        "Clave": "F4",
+        "Requisitos": "TC10, TC14",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 10,
+        "Secciones": {
+            "01": {
+                "Profesor": "LUIS MARIANO HERNÁNDEZ RAMÍREZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 11"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "12:00",
+                            "14:00"
+                        ],
+                        "Salon": "Salon 11"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "DISEÑO Y DESARROLLO DE SOFTWARE EDUCATIVO II": {
+        "Clave": "E14",
+        "Requisitos": "E13",
+        "Creditos": 8,
+        "Area": "Educación Matemática",
+        "Semestre": 0,
+        "Secciones": {
+            "01": {
+                "Profesor": "CHRISTIAN MORALES ONTIVEROS",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "09:00",
+                            "11:00"
+                        ],
+                        "Salon": "Aula Digital"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "09:00",
+                            "11:00"
+                        ],
+                        "Salon": "Aula Digital"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "HISTORIA DE LAS CIENCIAS": {
+        "Clave": "F38",
+        "Requisitos": "*",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 0,
+        "Secciones": {
+            "01": {
+                "Profesor": "CHRISTIAN MORALES ONTIVEROS",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Lunes",
+                        "Horario": [
+                            "11:00",
+                            "13:00"
+                        ],
+                        "Salon": "Aula Digital"
+                    },
+                    "2": {
+                        "Dia": "Miércoles",
+                        "Horario": [
+                            "11:00",
+                            "13:00"
+                        ],
+                        "Salon": "Aula Digital"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "EDUCACIÓN MATEMÁTICA": {
+        "Clave": "EI",
+        "Requisitos": "100 CRÉDITOS EN TC",
+        "Creditos": 8,
+        "Area": "Educación Matemática",
+        "Semestre": 0,
+        "Secciones": {
+            "01": {
+                "Profesor": "CHRISTIAN MORALES ONTIVEROS",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "09:00",
+                            "11:00"
+                        ],
+                        "Salon": "Aula Digital"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "09:00",
+                            "11:00"
+                        ],
+                        "Salon": "Aula Digital"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "TEORÍAS DE APRENDIZAJE I": {
+        "Clave": "E3",
+        "Requisitos": "120 CRÉDITOS EN TC",
+        "Creditos": 8,
+        "Area": "Educación Matemática",
+        "Semestre": 0,
+        "Secciones": {
+            "01": {
+                "Profesor": "CHRISTIAN MORALES ONTIVEROS",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "11:00",
+                            "13:00"
+                        ],
+                        "Salon": "Aula Digital"
+                    },
+                    "2": {
+                        "Dia": "Jueves",
+                        "Horario": [
+                            "11:00",
+                            "13:00"
+                        ],
+                        "Salon": "Aula Digital"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    },
+    "ÓPTICA FÍSICA I": {
+        "Clave": "F48",
+        "Requisitos": "F6",
+        "Creditos": 8,
+        "Area": "Física",
+        "Semestre": 0,
+        "Secciones": {
+            "01": {
+                "Profesor": "MAURICIO ORTÍZ GUTIÉRREZ",
+                "Actividades": {
+                    "1": {
+                        "Dia": "Martes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 3"
+                    },
+                    "2": {
+                        "Dia": "Viernes",
+                        "Horario": [
+                            "10:00",
+                            "12:00"
+                        ],
+                        "Salon": "Salon 5"
+                    }
+                }
+            }
+        },
+        "NuevoPlan": false
+    }
+}
