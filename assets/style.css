@@ -113,21 +113,6 @@ button:active {
   accent-color: #16a34a;
 }
 
-#closeMenu {
-  position: fixed;
-  top: 18px;
-  left: 18px;
-  background: #111827;
-  color: white;
-  border: none;
-  border-radius: 999px;
-  width: 34px;
-  height: 34px;
-  cursor: pointer;
-  text-align: center;
-  line-height: 34px;
-  z-index: 1100;
-}
 
 .calendar-container {
   display: flex;
@@ -192,8 +177,7 @@ button:active {
   padding-right: 12px;
   box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
   border: 1px solid #e5e7eb;
-  width: 95%;
-  margin: 0 auto;
+  padding: 0;
 }
 
 .search-wrapper {
@@ -321,10 +305,6 @@ input#searcher:focus {
     left: 12px;
   }
 
-  #closeMenu {
-    display: block;
-  }
-
   .calendar-card {
     max-width: 100%;
   }
@@ -337,11 +317,6 @@ input#searcher:focus {
   }
 }
 
-@media (min-width: 1101px) {
-  #closeMenu {
-    display: none;
-  }
-}
 
 .menu-backdrop {
   position: fixed;
@@ -380,7 +355,7 @@ input#searcher:focus {
   max-width: 1200px;
   overflow: hidden;
   position: relative;
-  border-radius: 14px;
+  border-radius: 15px;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
   margin-top: 20px;
   margin-bottom: 20px;
@@ -397,17 +372,19 @@ input#searcher:focus {
 }
 
 .day-header {
-  padding: 0;
+  padding-bottom: 3px;
+  padding-top: 3px;
 }
 
 div.day-header div.content {
   text-align: center;
   font-weight: bold;
-  line-height: 50px;
+  line-height: 45px;
   border-radius: 5px;
-  color: rgba(0, 0, 0, 0.8);
+  color: rgba(0, 0, 0, 1);
   margin-right: 5px;
   margin-left: 5px;
+  height: 100%;
 }
 
 .time-label {
@@ -441,6 +418,11 @@ div.day-header div.content {
   overflow: visible;
   z-index: 20;
   pointer-events: none;
+  display: grid;
+  grid-auto-rows: var(--slot-h);
+  column-gap: var(--day-gutter);
+  padding: 0 var(--day-gutter);
+  box-sizing: border-box;
 }
 
 /* --- EVENTOS --- */
@@ -489,7 +471,7 @@ div.day-header div.content {
 }
 
 .day-lane .event {
-  position: absolute;
+  position: relative;
   pointer-events: auto;
 }
 

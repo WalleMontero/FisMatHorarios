@@ -8,6 +8,7 @@ const SLOT_MINUTES = 30; // 30 min por fila
 const STORAGE_KEY = "fastweb_selected_sections_v1";
 const DAY_LANES = new Map(); // day -> element
 let cachedSlotHeightPx = null;
+let layoutTimer = null;
 
 function minutesFromHHMM(hhmm) {
   const [h, m] = hhmm.split(":").map(Number);
@@ -238,78 +239,6 @@ function clearRenderedEvents() {
   if (modalOverlay) modalOverlay.remove();
 }
 
-function recalculateDayEvents(day) {
-  const dayIndex = DAYS.indexOf(day);
-  if (dayIndex < 0) return;
-  const lane = DAY_LANES.get(day);
-  if (!lane) return;
-
-  const eventEls = Array.from(lane.querySelectorAll(`.event[data-day="${day}"]`));
-  const events = eventEls
-    .map((el) => ({
-      el,
-      startMin: parseInt(el.getAttribute("data-start-min"), 10),
-      endMin: parseInt(el.getAttribute("data-end-min"), 10),
-    }))
-    .sort((a, b) => a.startMin - b.startMin);
-
-  // Clusters (componentes conectadas por traslape transitive)
-  const clusters = [];
-  let cluster = [];
-  let clusterEnd = -Infinity;
-  for (const ev of events) {
-    if (cluster.length === 0) {
-      cluster = [ev];
-      clusterEnd = ev.endMin;
-      continue;
-    }
-    if (ev.startMin < clusterEnd) {
-      cluster.push(ev);
-      clusterEnd = Math.max(clusterEnd, ev.endMin);
-    } else {
-      clusters.push(cluster);
-      cluster = [ev];
-      clusterEnd = ev.endMin;
-    }
-  }
-  if (cluster.length) clusters.push(cluster);
-
-  for (const cl of clusters) {
-    // Asignación greedy de columnas dentro del cluster
-    const colEnds = []; // endMin por columna
-    const assigned = []; // { ev, col }
-    for (const ev of cl) {
-      let col = -1;
-      for (let i = 0; i < colEnds.length; i++) {
-        if (colEnds[i] <= ev.startMin) {
-          col = i;
-          break;
-        }
-      }
-      if (col === -1) {
-        colEnds.push(ev.endMin);
-        col = colEnds.length - 1;
-      } else {
-        colEnds[col] = ev.endMin;
-      }
-      assigned.push({ ev, col });
-    }
-
-    const cols = Math.max(1, colEnds.length);
-    const gap = getCalendarVarPx("--event-gap", 6);
-    const outer = getCalendarVarPx("--day-gutter", 6);
-    const laneWidth = lane.clientWidth;
-    const usable = Math.max(0, laneWidth - outer * 2 - gap * (cols - 1));
-    const colWidth = cols > 0 ? usable / cols : laneWidth;
-    for (const { ev, col } of assigned) {
-      const leftPx = outer + col * (colWidth + gap);
-      ev.el.style.left = `${leftPx}px`;
-      ev.el.style.width = `${Math.max(12, colWidth)}px`;
-      ev.el.style.zIndex = String(100 + col);
-    }
-  }
-}
-
 function showSubjectModal(subjectsData, subjectName, sectionId) {
   const subject = subjectsData[subjectName];
   const section = subject?.Secciones?.[sectionId];
@@ -405,8 +334,8 @@ function renderSelectedSections(subjectsData, selectedKeys) {
   if (emptyEl) emptyEl.hidden = true;
 
   const slotH = getSlotHeightPx();
-  const outer = getCalendarVarPx("--day-gutter", 6);
-  const affectedDays = new Set();
+  const totalSlots = ((END_HOUR - START_HOUR) * 60) / SLOT_MINUTES;
+  const byDay = new Map(DAYS.map((d) => [d, []]));
 
   for (const key of selectedKeys) {
     const [subjectName, sectionId] = key.split("|");
@@ -418,39 +347,73 @@ function renderSelectedSections(subjectsData, selectedKeys) {
     for (const m of meetings) {
       const dayIndex = DAYS.indexOf(m.day);
       if (dayIndex < 0) continue;
-      affectedDays.add(m.day);
       const dayStartMin = START_HOUR * 60;
 
-      const startSlots = (m.startMin - dayStartMin) / SLOT_MINUTES;
-      const endSlots = (m.endMin - dayStartMin) / SLOT_MINUTES;
-      const topPx = Math.max(0, startSlots * slotH);
-      const heightPx = Math.max(slotH, (endSlots - startSlots) * slotH);
-
-      const eventEl = document.createElement("div");
-      eventEl.classList.add("event");
-      eventEl.style.backgroundColor = stableColorFromString(subjectName);
-      const titleHtml = `<span class="event-title">${subjectName}</span>`;
-      const roomHtml = m.salon ? `<span class="event-room">${m.salon}</span>` : "";
-      eventEl.innerHTML = `${titleHtml}${roomHtml}`;
-      eventEl.setAttribute("data-day", m.day);
-      eventEl.setAttribute("data-start-min", String(m.startMin));
-      eventEl.setAttribute("data-end-min", String(m.endMin));
-      eventEl.style.top = `${topPx + 2}px`;
-      eventEl.style.height = `${Math.max(18, heightPx - 4)}px`;
-      eventEl.style.left = `${outer}px`;
-      eventEl.style.width = `calc(100% - ${outer * 2}px)`;
-
-      eventEl.addEventListener("click", (e) => {
-        e.stopPropagation();
-        showSubjectModal(subjectsData, subjectName, sectionId);
+      const startSlots = Math.round((m.startMin - dayStartMin) / SLOT_MINUTES);
+      const endSlots = Math.round((m.endMin - dayStartMin) / SLOT_MINUTES);
+      byDay.get(m.day).push({
+        subjectName,
+        sectionId,
+        meeting: m,
+        startSlots,
+        endSlots,
       });
-
-      const lane = DAY_LANES.get(m.day);
-      if (lane) lane.appendChild(eventEl);
     }
   }
 
-  affectedDays.forEach((d) => recalculateDayEvents(d));
+  // Render por día con grid (sin posicionamiento absoluto)
+  for (const day of DAYS) {
+    const lane = DAY_LANES.get(day);
+    if (!lane) continue;
+    lane.innerHTML = "";
+    const items = byDay.get(day) || [];
+    if (!items.length) continue;
+
+    items.sort((a, b) => a.startSlots - b.startSlots || a.endSlots - b.endSlots);
+
+    const colEnds = [];
+    const assignments = [];
+    for (const item of items) {
+      let col = -1;
+      for (let i = 0; i < colEnds.length; i++) {
+        if (colEnds[i] <= item.startSlots) {
+          col = i;
+          break;
+        }
+      }
+      if (col === -1) {
+        colEnds.push(item.endSlots);
+        col = colEnds.length - 1;
+      } else {
+        colEnds[col] = item.endSlots;
+      }
+      assignments.push({ item, col });
+    }
+
+    const cols = Math.max(1, colEnds.length);
+    lane.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    lane.style.gridAutoRows = `var(--slot-h)`;
+
+    for (const { item, col } of assignments) {
+      const eventEl = document.createElement("div");
+      eventEl.classList.add("event");
+      eventEl.style.backgroundColor = stableColorFromString(item.subjectName);
+      const titleHtml = `<span class="event-title">${item.subjectName}</span>`;
+      const roomHtml = item.meeting.salon ? `<span class="event-room">${item.meeting.salon}</span>` : "";
+      eventEl.innerHTML = `${titleHtml}${roomHtml}`;
+      eventEl.setAttribute("data-day", day);
+      eventEl.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showSubjectModal(subjectsData, item.subjectName, item.sectionId);
+      });
+
+      eventEl.style.gridColumn = `${col + 1} / span 1`;
+      eventEl.style.gridRowStart = String(item.startSlots + 1);
+      eventEl.style.gridRowEnd = String(item.endSlots + 1);
+
+      lane.appendChild(eventEl);
+    }
+  }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -458,7 +421,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const menu = document.getElementById("subjectMenu");
   const backdrop = document.getElementById("menuBackdrop");
   const menuToggle = document.getElementById("menuToggle");
-  const closeBtn = document.getElementById("closeMenu");
 
   let subjectsData;
   try {
@@ -502,7 +464,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.body.classList.toggle("no-scroll", open && window.innerWidth <= 1100);
   };
   menuToggle.addEventListener("click", () => setMenuOpen(true));
-  closeBtn.addEventListener("click", () => setMenuOpen(false));
   backdrop.addEventListener("click", () => setMenuOpen(false));
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") setMenuOpen(false);
@@ -519,7 +480,30 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.addEventListener("resize", () => {
     if (resizeTimer) window.clearTimeout(resizeTimer);
     resizeTimer = window.setTimeout(() => {
-      for (const day of DAYS) recalculateDayEvents(day);
+      const data = window.__subjectsData;
+      if (!data) return;
+      const currentSelected = loadSelectedSections().filter((key) => {
+        const [s, sec] = key.split("|");
+        return Boolean(data?.[s]?.Secciones?.[sec]);
+      });
+      renderCalendarGrid();
+      renderSelectedSections(data, currentSelected);
     }, 120);
   });
+
+  // Recalcular distribución (ancho y solapamiento) cuando cambia el tamaño real del calendario
+  if (window.ResizeObserver) {
+    const calendarEl = document.getElementById("calendar");
+    const ro = new ResizeObserver(() => {
+      const data = window.__subjectsData;
+      if (!data) return;
+      const currentSelected = loadSelectedSections().filter((key) => {
+        const [s, sec] = key.split("|");
+        return Boolean(data?.[s]?.Secciones?.[sec]);
+      });
+      renderCalendarGrid();
+      renderSelectedSections(data, currentSelected);
+    });
+    ro.observe(calendarEl);
+  }
 });
