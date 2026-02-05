@@ -17,13 +17,10 @@
     border: 1px solid #e5e7eb;
     width: 320px;
     flex-shrink: 0;
-    height: calc(100vh - 36px);
     position: sticky;
     top: 18px;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
-    z-index: 100;
 }
 
 .calendar-card {

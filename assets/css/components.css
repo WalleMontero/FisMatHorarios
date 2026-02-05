@@ -128,11 +128,11 @@ input#searcher:focus {
     border-radius: 12px;
     padding: 10px;
     margin-bottom: 10px;
-    max-height: 200px;
-    /* Reduced to leave more room for the subject-list */
     display: flex;
     flex-direction: column;
+    height: 500px !important;
 }
+
 
 .selected-title {
     font-size: 12px;
