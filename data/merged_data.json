@@ -473,26 +473,18 @@
                 "Profesor": "JOSÉ ANTONIO GONZÁLEZ CERVERA",
                 "Actividades": {
                     "1": {
-                        "Dia": "Lunes",
+                        "Dia": "Martes",
                         "Horario": [
-                            "08:00",
-                            "10:00"
+                            "12:00",
+                            "14:00"
                         ],
                         "Salon": "Laboratorio Mac"
                     },
                     "2": {
-                        "Dia": "Miércoles",
-                        "Horario": [
-                            "08:00",
-                            "10:00"
-                        ],
-                        "Salon": "Laboratorio Mac"
-                    },
-                    "3": {
                         "Dia": "Viernes",
                         "Horario": [
-                            "09:00",
-                            "10:00"
+                            "12:00",
+                            "15:00"
                         ],
                         "Salon": "Laboratorio Mac"
                     }
