@@ -308,17 +308,24 @@ function renderScheduleEditor(subjectsData, subjectName, sectionId) {
 
     modalContent.innerHTML = "";
 
+    // Header
     const closeButton = document.createElement("span");
-    closeButton.textContent = "X";
+    closeButton.textContent = "✕";
     closeButton.classList.add("close-button");
-    const modalTextColor = modalContent.style.color;
-    closeButton.style.color = modalTextColor;
     closeButton.addEventListener("click", closeModal);
     modalContent.appendChild(closeButton);
 
     const title = document.createElement("h3");
-    title.textContent = `Editando: ${subjectName} (Sec. ${sectionId})`;
+    title.style.marginBottom = "8px";
+    title.textContent = `Editar Horario`;
     modalContent.appendChild(title);
+
+    const subtitle = document.createElement("p");
+    subtitle.style.fontSize = "13px";
+    subtitle.style.opacity = "0.8";
+    subtitle.style.marginBottom = "16px";
+    subtitle.textContent = `${subjectName} · Sec. ${sectionId}`;
+    modalContent.appendChild(subtitle);
 
     const form = document.createElement("div");
     form.classList.add("editor-form");
@@ -330,61 +337,100 @@ function renderScheduleEditor(subjectsData, subjectName, sectionId) {
         form.innerHTML = "";
         Object.keys(activities).forEach((id) => {
             const act = activities[id];
-            const row = document.createElement("div");
-            row.classList.add("editor-row");
+            const card = document.createElement("div");
+            card.classList.add("editor-card");
+
+            // Row Top: Día e Horario
+            const topRow = document.createElement("div");
+            topRow.classList.add("editor-row-top");
 
             // Día
+            const dayGroup = document.createElement("div");
+            dayGroup.classList.add("field-group");
+            const dayLabel = document.createElement("span");
+            dayLabel.classList.add("field-label");
+            dayLabel.textContent = "Día";
             const daySel = document.createElement("select");
-            DAYS.forEach(d => {
+            const sortedDays = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+            sortedDays.forEach(d => {
                 const opt = document.createElement("option");
-                opt.value = d;
-                opt.textContent = d;
+                opt.value = d; opt.textContent = d;
                 if (d === act.Dia) opt.selected = true;
                 daySel.appendChild(opt);
             });
             daySel.addEventListener("change", (e) => act.Dia = e.target.value);
+            dayGroup.appendChild(dayLabel);
+            dayGroup.appendChild(daySel);
 
             // Inicio
+            const startGroup = document.createElement("div");
+            startGroup.classList.add("field-group");
+            const startLabel = document.createElement("span");
+            startLabel.classList.add("field-label");
+            startLabel.textContent = "Inicio";
             const startInp = document.createElement("input");
             startInp.type = "time";
             startInp.value = act.Horario[0];
             startInp.addEventListener("change", (e) => act.Horario[0] = e.target.value);
+            startGroup.appendChild(startLabel);
+            startGroup.appendChild(startInp);
 
             // Fin
+            const endGroup = document.createElement("div");
+            endGroup.classList.add("field-group");
+            const endLabel = document.createElement("span");
+            endLabel.classList.add("field-label");
+            endLabel.textContent = "Fin";
             const endInp = document.createElement("input");
             endInp.type = "time";
             endInp.value = act.Horario[1];
             endInp.addEventListener("change", (e) => act.Horario[1] = e.target.value);
+            endGroup.appendChild(endLabel);
+            endGroup.appendChild(endInp);
 
-            // Salón
+            topRow.appendChild(dayGroup);
+            topRow.appendChild(startGroup);
+            topRow.appendChild(endGroup);
+
+            // Row Bottom: Salón
+            const bottomRow = document.createElement("div");
+            bottomRow.classList.add("editor-row-bottom");
+            const salonGroup = document.createElement("div");
+            salonGroup.classList.add("field-group");
+            salonGroup.style.flex = "1";
+            const salonLabel = document.createElement("span");
+            salonLabel.classList.add("field-label");
+            salonLabel.textContent = "Salón / Aula";
             const salonInp = document.createElement("input");
             salonInp.type = "text";
-            salonInp.placeholder = "Salón";
+            salonInp.placeholder = "P. ej. Laboratorio 3";
             salonInp.value = act.Salon || "";
             salonInp.addEventListener("change", (e) => act.Salon = e.target.value);
+            salonGroup.appendChild(salonLabel);
+            salonGroup.appendChild(salonInp);
+            bottomRow.appendChild(salonGroup);
 
-            // Eliminar
+            // Eliminar Card
             const delBtn = document.createElement("button");
-            delBtn.textContent = "✕";
-            delBtn.classList.add("del-act-btn");
+            delBtn.innerHTML = "✕";
+            delBtn.classList.add("del-card-btn");
+            delBtn.setAttribute("title", "Eliminar esta actividad");
             delBtn.addEventListener("click", () => {
                 delete activities[id];
                 renderActivities();
             });
 
-            row.appendChild(daySel);
-            row.appendChild(startInp);
-            row.appendChild(endInp);
-            row.appendChild(salonInp);
-            row.appendChild(delBtn);
-            form.appendChild(row);
+            card.appendChild(topRow);
+            card.appendChild(bottomRow);
+            card.appendChild(delBtn);
+            form.appendChild(card);
         });
 
         const addBtn = document.createElement("button");
-        addBtn.textContent = "+ Agregar Actividad";
+        addBtn.innerHTML = "<span>+</span> Agregar Nueva Actividad";
         addBtn.classList.add("add-act-btn");
         addBtn.addEventListener("click", () => {
-            const nextId = String(Date.now()); // Usar timestamp para evitar colisiones
+            const nextId = String(Date.now());
             activities[nextId] = { Dia: "Lunes", Horario: ["10:00", "12:00"], Salon: "" };
             renderActivities();
         });
@@ -398,7 +444,7 @@ function renderScheduleEditor(subjectsData, subjectName, sectionId) {
     actions.classList.add("editor-actions");
 
     const saveBtn = document.createElement("button");
-    saveBtn.textContent = "Guardar Cambios";
+    saveBtn.textContent = "Guardar cambios";
     saveBtn.classList.add("save-btn");
     saveBtn.addEventListener("click", async () => {
         saveOverride(subjectName, sectionId, activities);
