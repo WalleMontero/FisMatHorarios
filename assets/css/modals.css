@@ -176,3 +176,124 @@
     justify-content: flex-end;
     gap: 12px;
 }
+
+/* --- SCHEDULE EDITOR STYLES --- */
+
+.edit-horario-btn {
+    margin-top: 16px;
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.edit-horario-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.editor-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.editor-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 1fr 1fr 32px;
+    gap: 8px;
+    align-items: center;
+}
+
+.editor-row select,
+.editor-row input {
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: inherit;
+    font-size: 14px;
+    width: 100%;
+}
+
+.editor-row select option {
+    background-color: #1e293b;
+    color: white;
+}
+
+.del-act-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.del-act-btn:hover {
+    color: #ef4444;
+}
+
+.add-act-btn {
+    margin-top: 8px;
+    padding: 8px;
+    background: none;
+    border: 1px dashed rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+    color: inherit;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.2s;
+}
+
+.add-act-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.editor-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.save-btn,
+.cancel-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.save-btn {
+    background-color: #10b981;
+    color: white;
+}
+
+.save-btn:hover {
+    background-color: #059669;
+}
+
+.cancel-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cancel-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}

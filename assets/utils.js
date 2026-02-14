@@ -112,6 +112,36 @@ function setSectionColor(key, color) {
     saveColorMap(map);
 }
 
+function loadOverrides() {
+    try {
+        const raw = localStorage.getItem(OVERRIDE_KEY);
+        return raw ? JSON.parse(raw) : {};
+    } catch {
+        return {};
+    }
+}
+
+function saveOverride(subjectName, sectionId, activities) {
+    const overrides = loadOverrides();
+    if (!overrides[subjectName]) overrides[subjectName] = { Secciones: {} };
+    overrides[subjectName].Secciones[sectionId] = { Actividades: activities };
+    localStorage.setItem(OVERRIDE_KEY, JSON.stringify(overrides));
+}
+
+function applyOverrides(data) {
+    const overrides = loadOverrides();
+    for (const [subName, subData] of Object.entries(overrides)) {
+        if (data[subName]) {
+            for (const [secId, secData] of Object.entries(subData.Secciones)) {
+                if (data[subName].Secciones[secId]) {
+                    data[subName].Secciones[secId].Actividades = secData.Actividades;
+                }
+            }
+        }
+    }
+    return data;
+}
+
 function getSlotHeightPx() {
     if (cachedSlotHeightPx != null) return cachedSlotHeightPx;
     const calendar = document.getElementById("calendar");
@@ -132,8 +162,12 @@ function getCalendarVarPx(name, fallback) {
 async function loadMergedData() {
     const response = await fetch("data/merged_data.json", { cache: "no-store" });
     if (!response.ok) throw new Error(`No pude cargar data/merged_data.json (${response.status})`);
-    const data = await response.json();
+    let data = await response.json();
     if (!data || typeof data !== "object") throw new Error("Datos inválidos en merged_data.json");
+
+    // Aplicar reemplazos locales
+    data = applyOverrides(data);
+
     return data;
 }
 

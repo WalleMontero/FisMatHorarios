@@ -266,11 +266,20 @@ function showSubjectModal(subjectsData, subjectName, sectionId) {
         activitiesList.appendChild(li);
     }
 
+    const editButton = document.createElement("button");
+    editButton.textContent = "Editar Horario";
+    editButton.classList.add("edit-horario-btn");
+    editButton.addEventListener("click", () => {
+        renderScheduleEditor(subjectsData, subjectName, sectionId);
+    });
+
     modalContent.appendChild(closeButton);
+    modalContent.appendChild(subjectTittle);
     modalContent.appendChild(infoList);
     modalContent.appendChild(sectionTitle);
     modalContent.appendChild(activitiesTitle);
     modalContent.appendChild(activitiesList);
+    modalContent.appendChild(editButton);
     modalOverlay.appendChild(modalContent);
 
     const calendar = document.getElementById("calendar");
@@ -284,6 +293,132 @@ function showSubjectModal(subjectsData, subjectName, sectionId) {
     modalOverlay.addEventListener("click", (e) => {
         if (e.target === modalOverlay) closeModal();
     });
+}
+
+/**
+ * Renderiza el formulario de edición de horarios dentro del modal
+ */
+function renderScheduleEditor(subjectsData, subjectName, sectionId) {
+    const modalContent = document.getElementById("modalContent");
+    if (!modalContent) return;
+
+    const subject = subjectsData[subjectName];
+    const section = subject?.Secciones?.[sectionId];
+    if (!section) return;
+
+    modalContent.innerHTML = "";
+
+    const closeButton = document.createElement("span");
+    closeButton.textContent = "X";
+    closeButton.classList.add("close-button");
+    const modalTextColor = modalContent.style.color;
+    closeButton.style.color = modalTextColor;
+    closeButton.addEventListener("click", closeModal);
+    modalContent.appendChild(closeButton);
+
+    const title = document.createElement("h3");
+    title.textContent = `Editando: ${subjectName} (Sec. ${sectionId})`;
+    modalContent.appendChild(title);
+
+    const form = document.createElement("div");
+    form.classList.add("editor-form");
+
+    // Copia profunda de las actividades actuales
+    const activities = JSON.parse(JSON.stringify(section.Actividades || {}));
+
+    function renderActivities() {
+        form.innerHTML = "";
+        Object.keys(activities).forEach((id) => {
+            const act = activities[id];
+            const row = document.createElement("div");
+            row.classList.add("editor-row");
+
+            // Día
+            const daySel = document.createElement("select");
+            DAYS.forEach(d => {
+                const opt = document.createElement("option");
+                opt.value = d;
+                opt.textContent = d;
+                if (d === act.Dia) opt.selected = true;
+                daySel.appendChild(opt);
+            });
+            daySel.addEventListener("change", (e) => act.Dia = e.target.value);
+
+            // Inicio
+            const startInp = document.createElement("input");
+            startInp.type = "time";
+            startInp.value = act.Horario[0];
+            startInp.addEventListener("change", (e) => act.Horario[0] = e.target.value);
+
+            // Fin
+            const endInp = document.createElement("input");
+            endInp.type = "time";
+            endInp.value = act.Horario[1];
+            endInp.addEventListener("change", (e) => act.Horario[1] = e.target.value);
+
+            // Salón
+            const salonInp = document.createElement("input");
+            salonInp.type = "text";
+            salonInp.placeholder = "Salón";
+            salonInp.value = act.Salon || "";
+            salonInp.addEventListener("change", (e) => act.Salon = e.target.value);
+
+            // Eliminar
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "✕";
+            delBtn.classList.add("del-act-btn");
+            delBtn.addEventListener("click", () => {
+                delete activities[id];
+                renderActivities();
+            });
+
+            row.appendChild(daySel);
+            row.appendChild(startInp);
+            row.appendChild(endInp);
+            row.appendChild(salonInp);
+            row.appendChild(delBtn);
+            form.appendChild(row);
+        });
+
+        const addBtn = document.createElement("button");
+        addBtn.textContent = "+ Agregar Actividad";
+        addBtn.classList.add("add-act-btn");
+        addBtn.addEventListener("click", () => {
+            const nextId = String(Date.now()); // Usar timestamp para evitar colisiones
+            activities[nextId] = { Dia: "Lunes", Horario: ["10:00", "12:00"], Salon: "" };
+            renderActivities();
+        });
+        form.appendChild(addBtn);
+    }
+
+    renderActivities();
+    modalContent.appendChild(form);
+
+    const actions = document.createElement("div");
+    actions.classList.add("editor-actions");
+
+    const saveBtn = document.createElement("button");
+    saveBtn.textContent = "Guardar Cambios";
+    saveBtn.classList.add("save-btn");
+    saveBtn.addEventListener("click", async () => {
+        saveOverride(subjectName, sectionId, activities);
+        // Recargar datos y refrescar UI
+        const newData = await loadMergedData();
+        Object.assign(subjectsData, newData);
+        renderSelectedSections(subjectsData, loadSelectedSections());
+        closeModal();
+    });
+
+    const cancelBtn = document.createElement("button");
+    cancelBtn.textContent = "Cancelar";
+    cancelBtn.classList.add("cancel-btn");
+    cancelBtn.addEventListener("click", () => {
+        showSubjectModal(subjectsData, subjectName, sectionId);
+    });
+
+    actions.appendChild(saveBtn);
+    actions.appendChild(cancelBtn);
+    modalContent.appendChild(actions);
 }
 
 function closeModal() {

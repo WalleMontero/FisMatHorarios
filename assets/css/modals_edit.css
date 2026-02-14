@@ -1,0 +1,89 @@
+/* Editing mode styles */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.edit-btn,
+.save-btn,
+.cancel-btn,
+.add-row-btn,
+.remove-row-btn,
+.reset-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.edit-btn,
+.add-row-btn,
+.reset-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: inherit;
+}
+
+.save-btn {
+    background: #10b981;
+    color: white;
+}
+
+.cancel-btn {
+    background: #ef4444;
+    color: white;
+}
+
+.edit-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 1fr 1fr 32px;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.edit-row select,
+.edit-row input {
+    width: 100%;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    color: inherit;
+    font-size: 13px;
+}
+
+.edit-row select option {
+    background: #333;
+    color: white;
+}
+
+.remove-row-btn {
+    background: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 18px;
+    padding: 0;
+    line-height: 1;
+}
+
+.remove-row-btn:hover {
+    color: #ef4444;
+}
+
+.modified-tag {
+    font-size: 10px;
+    background: #f59e0b;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+    text-transform: uppercase;
+}
