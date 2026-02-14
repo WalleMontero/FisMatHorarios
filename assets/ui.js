@@ -613,3 +613,40 @@ function renderSelectedSections(subjectsData, selectedKeys) {
         }
     }
 }
+function showAnnouncementModal() {
+    const modalOverlay = document.createElement("div");
+    modalOverlay.id = "announcementOverlay";
+    modalOverlay.classList.add("modal-overlay");
+
+    const modalContent = document.createElement("div");
+    modalContent.classList.add("modal-content", "announcement-modal");
+
+    // Contenido
+    modalContent.innerHTML = `
+        <span class="announcement-icon">✨</span>
+        <h2>¡Nueva Función!</h2>
+        <div class="announcement-preview">
+            <img src="assets/img/EditActivity.png" alt="Vista previa del editor">
+        </div>
+        <p>Ahora puedes personalizar los horarios de tus materias directamente en el calendario.</p>
+        <p style="font-size: 13px; opacity: 0.8;">Haz clic en cualquier materia para empezar a editar sus actividades.</p>
+        <button class="announcement-btn" id="closeAnnouncement">¡Entendido!</button>
+    `;
+
+    modalOverlay.appendChild(modalContent);
+    document.body.appendChild(modalOverlay);
+
+    // Animación de entrada
+    setTimeout(() => {
+        modalOverlay.classList.add("show");
+        modalContent.classList.add("show");
+    }, 10);
+
+    const closeBtn = modalContent.querySelector("#closeAnnouncement");
+    closeBtn.addEventListener("click", () => {
+        localStorage.setItem("hasSeenEditorAnnouncement", "true");
+        modalOverlay.classList.remove("show");
+        modalContent.classList.remove("show");
+        setTimeout(() => modalOverlay.remove(), 300);
+    });
+}

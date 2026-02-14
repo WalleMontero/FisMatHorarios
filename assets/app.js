@@ -116,4 +116,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (syncBtn) {
     syncBtn.addEventListener("click", () => handleSyncClick(subjectsData));
   }
+
+  // Anuncio de nueva función (una sola vez)
+  if (localStorage.getItem("hasSeenEditorAnnouncement") !== "true") {
+    setTimeout(() => {
+      showAnnouncementModal();
+    }, 1000); // Pequeño delay para que no sea tan brusco
+  }
 });
