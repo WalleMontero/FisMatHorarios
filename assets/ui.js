@@ -351,7 +351,7 @@ function renderScheduleEditor(subjectsData, subjectName, sectionId) {
             dayLabel.classList.add("field-label");
             dayLabel.textContent = "Día";
             const daySel = document.createElement("select");
-            const sortedDays = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+            const sortedDays = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
             sortedDays.forEach(d => {
                 const opt = document.createElement("option");
                 opt.value = d; opt.textContent = d;
@@ -464,8 +464,8 @@ function renderScheduleEditor(subjectsData, subjectName, sectionId) {
 
     const restoreBtn = document.createElement("button");
     restoreBtn.textContent = "Restaurar cambios";
-    restoreBtn.classList.add("cancel-btn"); // Reusing cancel-btn style for neutral look
-    restoreBtn.style.marginRight = "auto";
+    restoreBtn.classList.add("restore-btn");
+    restoreBtn.classList.add("cancel-btn"); // Base style
     restoreBtn.addEventListener("click", async () => {
         if (confirm("¿Estás seguro de que quieres restaurar el horario original de esta sección?")) {
             deleteOverride(subjectName, sectionId);

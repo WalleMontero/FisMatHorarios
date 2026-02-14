@@ -266,11 +266,11 @@
 
 .editor-card select,
 .editor-card input {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     padding: 8px 10px;
-    color: white;
+    color: inherit;
     font-size: 13px;
     font-family: inherit;
     width: 100%;
@@ -280,8 +280,8 @@
 
 .editor-card select:focus,
 .editor-card input:focus {
-    border-color: rgba(255, 255, 255, 0.5);
-    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .editor-card select option {
@@ -371,12 +371,86 @@
 }
 
 .cancel-btn {
-    background: rgba(255, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.05);
     color: inherit;
-    border: 1px solid rgba(255, 0, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .cancel-btn:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
+}
+
+/* --- RESPONSIVE MOBILE OPTIMIZATION --- */
+
+@media (max-width: 550px) {
+    .modal-content {
+        padding: 20px 16px;
+        width: 95%;
+        max-height: 90vh;
+    }
+
+    .editor-form {
+        gap: 12px;
+        margin-top: 16px;
+        padding-top: 16px;
+    }
+
+    .editor-card {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .editor-row-top {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    /* Make day selector take full width on top */
+    .editor-row-top .field-group:nth-child(1) {
+        grid-column: span 2;
+    }
+
+    .editor-row-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .editor-card select,
+    .editor-card input {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .editor-actions {
+        flex-direction: column;
+        gap: 8px;
+        padding-top: 16px;
+        margin-top: 20px;
+    }
+
+    .editor-actions button {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 14px !important;
+        font-size: 15px;
+    }
+
+    .restore-btn {
+        order: 3;
+        background: rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .save-btn {
+        order: 1;
+    }
+
+    .cancel-btn:not(.restore-btn) {
+        order: 2;
+    }
+}
+
+/* Base style for restore button to match logic in ui.js */
+.restore-btn {
+    margin-right: auto;
 }
