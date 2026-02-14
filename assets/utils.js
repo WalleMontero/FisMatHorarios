@@ -128,6 +128,18 @@ function saveOverride(subjectName, sectionId, activities) {
     localStorage.setItem(OVERRIDE_KEY, JSON.stringify(overrides));
 }
 
+function deleteOverride(subjectName, sectionId) {
+    const overrides = loadOverrides();
+    if (overrides[subjectName] && overrides[subjectName].Secciones[sectionId]) {
+        delete overrides[subjectName].Secciones[sectionId];
+        // Si no quedan secciones para esa materia, borrar la materia también
+        if (Object.keys(overrides[subjectName].Secciones).length === 0) {
+            delete overrides[subjectName];
+        }
+        localStorage.setItem(OVERRIDE_KEY, JSON.stringify(overrides));
+    }
+}
+
 function applyOverrides(data) {
     const overrides = loadOverrides();
     for (const [subName, subData] of Object.entries(overrides)) {

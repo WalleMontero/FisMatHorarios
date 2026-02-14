@@ -462,6 +462,21 @@ function renderScheduleEditor(subjectsData, subjectName, sectionId) {
         showSubjectModal(subjectsData, subjectName, sectionId);
     });
 
+    const restoreBtn = document.createElement("button");
+    restoreBtn.textContent = "Restaurar cambios";
+    restoreBtn.classList.add("cancel-btn"); // Reusing cancel-btn style for neutral look
+    restoreBtn.style.marginRight = "auto";
+    restoreBtn.addEventListener("click", async () => {
+        if (confirm("¿Estás seguro de que quieres restaurar el horario original de esta sección?")) {
+            deleteOverride(subjectName, sectionId);
+            const newData = await loadMergedData();
+            Object.assign(subjectsData, newData);
+            renderSelectedSections(subjectsData, loadSelectedSections());
+            closeModal();
+        }
+    });
+
+    actions.appendChild(restoreBtn);
     actions.appendChild(saveBtn);
     actions.appendChild(cancelBtn);
     modalContent.appendChild(actions);
